@@ -96,10 +96,3 @@ function tbz_wc_ourpass_testmode_notice()
         echo '<div class="error"><p>' . sprintf('Ourpass test mode is still enabled, Click <strong><a href="%s">here</a></strong> to disable it when you want to start accepting live payment on your site.', esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass'))) . '</p></div>';
     }
 }
-
-function dd(...$value){
-    echo "<pre>";
-    echo print_r($value);
-    echo "</pre>";
-    die();
-}
