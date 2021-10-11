@@ -14,8 +14,9 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         $this->method_description       = sprintf('Ourpass provide merchants with the tools and services needed to accept online payments from customers. <a href="%1$s" target="_blank">Sign up</a> for a Ourpass account, and <a href="%2$s" target="_blank">get your API keys</a>.', 'https://ourpass.co', 'https://merchant.ourpass.co/settings');
         $this->has_fields               = false;
         $this->order_button_text        = 'Make Payment';
-        $this->ourpass_test_base_url    = 'https://user-api-staging.ourpass.co';
-        $this->ourpass_live_base_url    = 'https://beta-api.ourpass.co';
+        $this->ourpass_environment_is_production      = true;
+        $this->ourpass_production_base_url    = 'https://beta-api.ourpass.co';
+        $this->ourpass_staging_base_url    = 'https://user-api-staging.ourpass.co';
 
         // Load the form fields.
         $this->init_form_fields();
@@ -39,7 +40,9 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         $this->public_key = $this->testmode ? $this->test_public_key : $this->live_public_key;
         $this->secret_key = $this->testmode ? $this->test_secret_key : $this->live_secret_key;
-        $this->ourpass_base_url = $this->testmode ? $this->ourpass_test_base_url : $this->ourpass_live_base_url;
+        $this->ourpass_base_url = $this->ourpass_environment_is_production 
+            ? $this->ourpass_production_base_url 
+            : $this->ourpass_staging_base_url ;
         
 
         // Hooks
@@ -266,7 +269,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         wp_enqueue_script('wc_ourpass', plugins_url('assets/js/ourpass' . $suffix . '.js', WC_OURPASS_MAIN_FILE), array('jquery', 'ourpass'), WC_OURPASS_VERSION, true);
 
         $ourpass_params = array(
-            'env' => $this->testmode ? 'sandbox' : 'production',
+            'env' => $this->ourpass_environment_is_production ? 'production' : 'sandbox',
             'api_key' => $this->secret_key,
         );
 
