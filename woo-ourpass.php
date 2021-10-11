@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Plugin Name: Ourpass WooCommerce Payment Gateway
- * Plugin URI: https://ourpass.co
- * Description: WooCommerce payment gateway for Ourpass
+ * Plugin Name: Ourpass Payment Gateway
+ * Plugin URI: https://ourpass.co/wordpress-plugin
+ * Description: Ourpass payment gateway for WooCommerce
  * Version: 1.0.0
  * Author: Ourpass
- * Author URI: https://ourpass.co
+ * Author URI: https://tools.ourpass.co
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * WC requires at least: 3.0.0
