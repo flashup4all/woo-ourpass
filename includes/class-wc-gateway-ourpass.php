@@ -10,10 +10,10 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
     public function __construct()
     {
         $this->id                       = 'ourpass';
-        $this->method_title             = 'Ourpass';
-        $this->method_description       = sprintf('Ourpass provide merchants with the tools and services needed to accept online payments from customers. <a href="%1$s" target="_blank">Sign up</a> for a Ourpass account, and <a href="%2$s" target="_blank">get your API keys</a>.', 'https://ourpass.co', 'https://merchant.ourpass.co/settings');
+        $this->method_title             = __('Ourpass');
+        $this->method_description       = sprintf(__('Ourpass provide merchants with the tools and services needed to accept online payments from customers. <a href="%1$s" target="_blank">Sign up</a> for a Ourpass account, and <a href="%2$s" target="_blank">get your API keys</a>.'), 'https://ourpass.co', 'https://merchant.ourpass.co/settings');
         $this->has_fields               = false;
-        $this->order_button_text        = 'Make Payment';
+        $this->order_button_text        = __('Make Payment');
         $this->ourpass_environment_is_production      = true;
         $this->ourpass_production_base_url    = 'https://beta-api.ourpass.co';
         $this->ourpass_staging_base_url    = 'https://user-api-staging.ourpass.co';
@@ -75,7 +75,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         if (!in_array(get_woocommerce_currency(), apply_filters('woocommerce_ourpass_supported_currencies', array_keys($allowedCurrencies)))) {
 
-            $this->msg = sprintf('Ourpass does not support your store currency. Kindly set it to either NGN (&#8358;) <a href="%s">here</a>', admin_url('admin.php?page=wc-settings&tab=general'));
+            $this->msg = sprintf(__('Ourpass does not support your store currency. Kindly set it to either NGN (&#8358;) <a href="%s">here</a>'), admin_url('admin.php?page=wc-settings&tab=general'));
 
             return false;
         }
@@ -88,8 +88,6 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
      */
     public function get_icon()
     {
-        $base_location = wc_get_base_location();
-
         $icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/ourpass-wc.svg', WC_OURPASS_MAIN_FILE)) . '" alt="Ourpass Payment Options" />';
 
         return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
@@ -106,7 +104,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         // Check required fields.
         if (!($this->public_key && $this->secret_key)) {
-            echo '<div class="error"><p>' . sprintf('Please enter your Ourpass merchant details <a href="%s">here</a> to be able to use the Ourpass WooCommerce plugin.', admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass')) . '</p></div>';
+            echo '<div class="error"><p>' . sprintf(__('Please enter your Ourpass merchant details <a href="%s">here</a> to be able to use the Ourpass WooCommerce plugin.'), admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass')) . '</p></div>';
             return;
         }
     }
@@ -140,10 +138,10 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         ?>
 
         <h2>
-            <?php echo 'Ourpass'; ?>
+            <?php echo __('Ourpass'); ?>
             <?php
             if (function_exists('wc_back_link')) {
-                wc_back_link('Return to payments', admin_url('admin.php?page=wc-settings&tab=checkout'));
+                wc_back_link(__('Return to payments'), admin_url('admin.php?page=wc-settings&tab=checkout'));
             }
             ?>
         </h2>
@@ -156,7 +154,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         } else {
         ?>
             <div class="inline error">
-                <p><strong><?php echo 'Ourpass Payment Gateway Disabled'; ?></strong>: <?php echo $this->msg; ?></p>
+                <p><strong><?php echo __('Ourpass Payment Gateway Disabled'); ?></strong>: <?php echo $this->msg; ?></p>
             </div>
 
             <?php
@@ -447,7 +445,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         $response = json_decode(wp_remote_retrieve_body($request));
 
         if(! (bool) $response->status) {
-            $order->update_status('failed', 'Payment was declined by ourpass.');
+            $order->update_status('failed', __('Payment was declined by ourpass.'));
             wp_redirect($this->get_return_url($order));
             exit;
         }
@@ -459,7 +457,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         }
         
         $order->payment_complete($ourpass_reference);
-        $order->add_order_note(sprintf('Payment via ourpass was successful (Transaction Reference: %s)', $ourpass_reference));
+        $order->add_order_note(sprintf(__('Payment via ourpass was successful (Transaction Reference: %s)'), $ourpass_reference));
 
         if ($this->is_autocomplete_order_enabled($order)) {
             $order->update_status('completed');

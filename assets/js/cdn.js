@@ -1,4 +1,3 @@
-
 function Ourpass() {
   this.isMobileDevice = /Mobi/i.test(window.navigator.userAgent)
 
@@ -129,7 +128,7 @@ Ourpass.prototype.generateIframeSrc = function () {
 // Close Button
 Ourpass.prototype.g = function () {
   this.removeElement("ourpassParentModal")
-  this.OncloseData()
+  this.clientInfo.onClose()
 }
 
 // click Modal
@@ -170,7 +169,9 @@ Ourpass.prototype.removeElement = function (element) {
   }
 
   if (element) {
-    element.parentNode.removeChild(element);
+    if (element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
   }
 }
 
@@ -211,7 +212,7 @@ Ourpass.prototype.openIframe = function (clientInfo) {
     "ourPassContentModal",
     "span",
     ["ourpassCloseButton",
-      ["onclick", "g()"]],
+      ["onclick", "OurpassCheckout.g()"]],
     this.dStyle.ourpassCloseButton,
     "&times;"
   );
@@ -244,7 +245,7 @@ Ourpass.prototype.openIframe = function (clientInfo) {
     if (this.config.baseUrl === event.origin) {
       if (event.data == 'false pass') {
         this.removeElement(backDropElement)
-        this.clientInfo.onclose()
+        this.clientInfo.onClose()
       }
 
       if (event.data == 'false pass1') {
