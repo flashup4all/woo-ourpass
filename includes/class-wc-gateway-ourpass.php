@@ -248,7 +248,6 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
             return;
         }
 
-        $order_key = urldecode($_GET['key']);
         $order_id  = absint(get_query_var('order-pay'));
 
         $order = wc_get_order($order_id);
@@ -368,22 +367,25 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
      */
     public function receipt_page($order_id)
     {
-
         $order = wc_get_order($order_id);
 
-        $html = "";
-        $html .= '<div id="wc-ourpass-form">';
-        $html .= '<p>' . 'Thank you for your order, please click the button below to pay with Ourpass.' . '</p>';
-        $html .= '<div id="ourpass_form"><form id="order_review" method="post" action="' . WC()->api_request_url('WC_Gateway_Ourpass') . '"></form>';
-        $html .= '<div id="ourpass-button-container">';
-        $html .= '<button class="button" id="ourpass-payment-button">' . 'Pay Now' . '</button>';
-        if (!$this->remove_cancel_order_button) {
-            $html .= '  <a class="button cancel" id="ourpass-cancel-payment-button" href="' . esc_url($order->get_cancel_order_url()) . '">' . 'Cancel order' . '</a></div>';
-        }
-        $html .= '</div>';
-        $html .= '</div>';
+        echo '<div id="wc-ourpass-form">';
 
-        echo $html;
+        echo '<p>Thank you for your order, please click the button below to pay with Ourpass.</p>';
+
+        echo '<div id="ourpass_form"><form id="order_review" method="post" action="' . WC()->api_request_url('WC_Gateway_Ourpass') . '"></form>';
+        
+        echo '<div id="ourpass-button-container">';
+
+        echo '<button class="button" id="ourpass-payment-button">' . 'Pay Now' . '</button>';
+
+        if (!$this->remove_cancel_order_button) {
+            echo '  <a class="button cancel" id="ourpass-cancel-payment-button" href="' . esc_url($order->get_cancel_order_url()) . '">' . 'Cancel order' . '</a></div>';
+        }
+
+        echo  '</div>';
+        
+        echo  '</div>';
     }
 
     /**
