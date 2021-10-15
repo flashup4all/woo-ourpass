@@ -154,7 +154,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         } else {
         ?>
             <div class="inline error">
-                <p><strong><?php echo __('Ourpass Payment Gateway Disabled'); ?></strong>: <?php echo $this->msg; ?></p>
+                <p><strong><?php echo __('Ourpass Payment Gateway Disabled'); ?></strong>: <?php echo wp_kses( $this->msg, wp_kses_allowed_html()); ?></p>
             </div>
 
             <?php
