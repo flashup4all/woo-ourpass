@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Plugin Name: Ourpass Payment Gateway
+ * Plugin Name: OurPass Payment Gateway
  * Plugin URI: https://ourpass.co/wordpress-plugin
- * Description: Ourpass payment gateway for WooCommerce
+ * Description: OurPass payment gateway for WooCommerce
  * Version: 1.0.0
- * Author: Ourpass
+ * Author: OurPass 
  * Author URI: https://tools.ourpass.co
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -22,7 +22,7 @@ define('WC_OURPASS_URL', untrailingslashit(plugins_url('/', __FILE__)));
 define('WC_OURPASS_VERSION', '1.0.0');
 
 /**
- * Initialize Ourpass WooCommerce payment gateway.
+ * Initialize OurPass WooCommerce payment gateway.
  */
 function tbz_wc_ourpass_init()
 {
@@ -53,14 +53,14 @@ function tbz_woo_ourpass_plugin_action_links($links)
 {
 
     $settings_link = array(
-        'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass') . '" title="View Ourpass WooCommerce Settings">Settings</a>',
+        'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass') . '" title="View OurPass WooCommerce Settings">Settings</a>',
     );
 
     return array_merge($settings_link, $links);
 }
 
 /**
- * Add Ourpass Gateway to WooCommerce.
+ * Add OurPass Gateway to WooCommerce.
  *
  * @param array $methods WooCommerce payment gateways methods.
  *
@@ -77,7 +77,7 @@ function tbz_wc_add_ourpass_gateway($methods)
  */
 function tbz_wc_ourpass_wc_missing_notice()
 {
-    echo '<div class="error"><p><strong>' . sprintf('Ourpass requires WooCommerce to be installed and active. Click %s to install WooCommerce.', '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>';
+    echo '<div class="error"><p><strong>' . sprintf('OurPass requires WooCommerce to be installed and active. Click %s to install WooCommerce.', '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>';
 }
 
 /**
@@ -93,6 +93,6 @@ function tbz_wc_ourpass_testmode_notice()
     $test_mode         = isset($ourpass_settings['testmode']) ? $ourpass_settings['testmode'] : '';
 
     if ('yes' === $test_mode) {
-        echo '<div class="error"><p>' . sprintf('Ourpass test mode is still enabled, Click <strong><a href="%s">here</a></strong> to disable it when you want to start accepting live payment on your site.', esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass'))) . '</p></div>';
+        echo '<div class="error"><p>' . sprintf('OurPass test mode is still enabled, Click <strong><a href="%s">here</a></strong> to disable it when you want to start accepting live payment on your site.', esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass'))) . '</p></div>';
     }
 }

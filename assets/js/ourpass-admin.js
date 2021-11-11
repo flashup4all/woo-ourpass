@@ -2,7 +2,7 @@ jQuery(function ($) {
     'use strict';
 
     /**
-     * Object to handle Ourpass admin functions.
+     * Object to handle OurPass admin functions.
      */
     var wc_ourpass_admin = {
         /**

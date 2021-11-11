@@ -10,8 +10,8 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
     public function __construct()
     {
         $this->id                       = 'ourpass';
-        $this->method_title             = __('Ourpass');
-        $this->method_description       = sprintf(__('Ourpass provide merchants with the tools and services needed to accept online payments from customers. <a href="%1$s" target="_blank">Sign up</a> for a Ourpass account, and <a href="%2$s" target="_blank">get your API keys</a>.'), 'https://ourpass.co', 'https://merchant.ourpass.co/settings');
+        $this->method_title             = __('OurPass');
+        $this->method_description       = sprintf(__('OurPass provide merchants with the tools and services needed to accept online payments from customers. <a href="%1$s" target="_blank">Sign up</a> for a OurPass account, and <a href="%2$s" target="_blank">get your API keys</a>.'), 'https://merchant.ourpass.co', 'https://merchant.ourpass.co/settings');
         $this->has_fields               = false;
         $this->order_button_text        = __('Make Payment');
         $this->ourpass_environment_is_production      = true;
@@ -75,7 +75,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         if (!in_array(get_woocommerce_currency(), apply_filters('woocommerce_ourpass_supported_currencies', array_keys($allowedCurrencies)))) {
 
-            $this->msg = sprintf(__('Ourpass does not support your store currency. Kindly set it to either NGN (&#8358;) <a href="%s">here</a>'), admin_url('admin.php?page=wc-settings&tab=general'));
+            $this->msg = sprintf(__('OurPass does not support your store currency. Kindly set it to either NGN (&#8358;) <a href="%s">here</a>'), admin_url('admin.php?page=wc-settings&tab=general'));
 
             return false;
         }
@@ -84,17 +84,17 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
     }
 
     /**
-     * Display ourpass payment icon.
+     * Display OurPass payment icon.
      */
     public function get_icon()
     {
-        $icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/ourpass-wc.svg', WC_OURPASS_MAIN_FILE)) . '" alt="Ourpass Payment Options" />';
+        $icon = '<img src="' . WC_HTTPS::force_https_url(plugins_url('assets/images/ourpass-wc.svg', WC_OURPASS_MAIN_FILE)) . '" alt="OurPass Payment Options" />';
 
         return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
     }
 
     /**
-     * Check if ourpass merchant details is filled.
+     * Check if OurPass merchant details is filled.
      */
     public function admin_notices()
     {
@@ -104,13 +104,13 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         // Check required fields.
         if (!($this->public_key && $this->secret_key)) {
-            echo '<div class="error"><p>' . sprintf(__('Please enter your Ourpass merchant details <a href="%s">here</a> to be able to use the Ourpass WooCommerce plugin.'), admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass')) . '</p></div>';
+            echo '<div class="error"><p>' . sprintf(__('Please enter your OurPass merchant details <a href="%s">here</a> to be able to use the OurPass WooCommerce plugin.'), admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass')) . '</p></div>';
             return;
         }
     }
 
     /**
-     * Check if Ourpass gateway is enabled.
+     * Check if OurPass gateway is enabled.
      *
      * @return bool
      */
@@ -138,7 +138,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         ?>
 
         <h2>
-            <?php echo __('Ourpass'); ?>
+            <?php echo __('OurPass'); ?>
             <?php
             if (function_exists('wc_back_link')) {
                 wc_back_link(__('Return to payments'), admin_url('admin.php?page=wc-settings&tab=checkout'));
@@ -154,7 +154,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         } else {
         ?>
             <div class="inline error">
-                <p><strong><?php echo __('Ourpass Payment Gateway Disabled'); ?></strong>: <?php echo wp_kses( $this->msg, wp_kses_allowed_html()); ?></p>
+                <p><strong><?php echo __('OurPass Payment Gateway Disabled'); ?></strong>: <?php echo wp_kses( $this->msg, wp_kses_allowed_html()); ?></p>
             </div>
 
             <?php
@@ -169,31 +169,36 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         $form_fields = array(
             'enabled' => array(
                 'title'       => 'Enable/Disable',
-                'label'       => 'Enable Ourpass',
+                'label'       => 'Enable OurPass',
                 'type'        => 'checkbox',
-                'description' => 'Enable Ourpass as a payment option on the checkout page.',
+                'description' => 'Enable OurPass as a payment option on the checkout page.',
                 'default'     => 'no',
                 'desc_tip'    => true,
             ),
             'title' => array(
                 'title'       => 'Title',
                 'type'        => 'text',
+                'class'       => 'wc-ourpass-title',
                 'description' => 'This controls the payment method title which the user sees during checkout.',
-                'default'     => 'Ourpass',
+                'default'     => 'Checkout with OurPass',
                 'desc_tip'    => true,
+                'custom_attributes' => [
+                    'readonly'    => true,
+                    'disable'    => true,
+                ]
             ),
             'description' => array(
                 'title'       => 'Description',
                 'type'        => 'textarea',
                 'description' => 'This controls the payment method description which the user sees during checkout.',
-                'default'     => 'Make payment using your ourpass wallet',
+                'default'     => 'Experience the fastest way to shop and sell online in just one click.',
                 'desc_tip'    => true,
             ),
             'testmode' => array(
                 'title'       => 'Test mode',
                 'label'       => 'Enable Test Mode',
                 'type'        => 'checkbox',
-                'description' => 'Test mode enables you to test payments before going live. <br />Once the LIVE MODE is enabled on your Ourpass account uncheck this.',
+                'description' => 'Test mode enables you to test payments before going live. <br />Once the LIVE MODE is enabled on your OurPass account uncheck this.',
                 'default'     => 'yes',
                 'desc_tip'    => true,
             ),
@@ -236,7 +241,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
     }
 
     /**
-     * Outputs scripts used for ourpass payment.
+     * Outputs scripts used for OurPass payment.
      */
     public function payment_scripts()
     {
@@ -371,7 +376,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
         echo '<div id="wc-ourpass-form">';
 
-        echo '<p>Thank you for your order, please click the button below to pay with Ourpass.</p>';
+        echo '<p>Thank you for your order, please click the button below to pay with OurPass .</p>';
 
         echo '<div id="ourpass_form"><form id="order_review" method="post" action="' . WC()->api_request_url('WC_Gateway_Ourpass') . '"></form>';
         
@@ -389,7 +394,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
     }
 
     /**
-     * Verify Ourpass payment.
+     * Verify OurPass payment.
      */
     public function verify_ourpass_transaction()
     {
@@ -459,7 +464,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
         }
         
         $order->payment_complete($ourpass_reference);
-        $order->add_order_note(sprintf(__('Payment via ourpass was successful (Transaction Reference: %s)'), $ourpass_reference));
+        $order->add_order_note(sprintf(__('Payment via OurPass was successful (Transaction Reference: %s)'), $ourpass_reference));
 
         if ($this->is_autocomplete_order_enabled($order)) {
             $order->update_status('completed');
