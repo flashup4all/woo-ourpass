@@ -36,10 +36,11 @@ Keep track of all your online orders and transactions in one place.
 OurPass is developed and supported by OurPass Inc
 
 == Screenshots ==
-1. [Settings](assets/screenshot-1 "Settings")
+1. [Settings](assets/screenshot-2 "Settings")
 2. [Cart](assets/screenshot-3 "Cart")
 3. [Checkout](assets/screenshot-4 "Checkout")
-4. [OurPass Login](assets/screenshot-1 "OurPass Login & Payment")
+4. [OurPass Login](assets/screenshot-5 "OurPass Login & Payment")
+4. [OurPass Payment](assets/screenshot-6 "OurPass Payment")
 
 == Changelog ==
 No new changes.
