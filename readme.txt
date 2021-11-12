@@ -14,18 +14,18 @@ OurPass is the fastest one-click checkout technology for digital commerce in Afr
 == Description ==
 OurPass is the fastest one-click checkout technology for digital commerce in Africa.
 
-### Checkout in one click
-OurPass allows you to process your online orders instantly by replacing the long form at checkout with just a single click.
+### SHOP BETTER WITH OURPASS
+We make it easier, safer and faster for you to shop from your favourite online stores. 
+Shop and pay without the stress of filling in all your details anywhere you see the OurPass checkout button.
 
-### Fast and secure payments
-No more sharing your card details on multiple websites. Add money to your OurPass account and pay with your wallet at checkout in just one click.
+### FAST AND SECURE PAYMENTS
+Your details are stored safely. You no longer have to share your information across multiple websites when shopping online.
 
-### Track your activity
-Keep track of all your online orders and transactions in one place.
+### TRACK YOUR ACTIVITY
+Keep track of all your online orders and transactions in one place. Reorder your favourite items with one click.
 
 == Frequently Asked Questions ==
 = [What is OurPass Checkout?](https://help.ourpass.co/en/articles/5479441-what-is-ourpass-checkout) =
-
 = [Is OurPass also a digital bank?](https://help.ourpass.co/en/articles/5479451-is-ourpass-also-a-digital-bank) =
 = [How does OurPass ensure security?](https://help.ourpass.co/en/articles/5479497-how-does-ourpass-ensure-security) =
 = [Can I make International Payments?](https://help.ourpass.co/en/articles/5479499-can-i-make-international-payments) =
@@ -39,8 +39,8 @@ OurPass is developed and supported by OurPass Inc
 1. [Settings](assets/screenshot-2 "Settings")
 2. [Cart](assets/screenshot-3 "Cart")
 3. [Checkout](assets/screenshot-4 "Checkout")
-4. [OurPass Login](assets/screenshot-5 "OurPass Login & Payment")
-4. [OurPass Payment](assets/screenshot-6 "OurPass Payment")
+4. [OurPass Login](assets/screenshot-5 "OurPass Login")
+5. [OurPass Payment](assets/screenshot-6 "OurPass Payment")
 
 == Changelog ==
 No new changes.
