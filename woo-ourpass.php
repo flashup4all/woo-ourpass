@@ -4,7 +4,7 @@
  * Plugin Name: OurPass Payment Gateway
  * Plugin URI: https://ourpass.co/wordpress-plugin
  * Description: OurPass payment gateway for WooCommerce
- * Version: 1.0.0
+ * Version: 1.0.2
  * Author: OurPass 
  * Author URI: https://tools.ourpass.co
  * License: GPL-2.0+
@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 
 define('WC_OURPASS_MAIN_FILE', __FILE__);
 define('WC_OURPASS_URL', untrailingslashit(plugins_url('/', __FILE__)));
-define('WC_OURPASS_VERSION', '1.0.0');
+define('WC_OURPASS_VERSION', '1.0.2');
 
 /**
  * Initialize OurPass WooCommerce payment gateway.
