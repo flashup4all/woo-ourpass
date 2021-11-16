@@ -294,18 +294,14 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
             {
                 $product_id = $lineItem['product_id'];
                 $product = wc_get_product( $product_id );
-
-                $description = ($product->get_short_description() !== '') 
-                    ? $product->get_short_description()
-                    : $product->get_description();
-
+                
                 $productInfo = [
                     'name' =>  $lineItem['name'],
-                    'src' => wp_get_attachment_image_url($product->get_image_id(), 'full'),
+                    'description' => $lineItem['name'],
                     'amount' => $lineItem['total'],
-                    'url' => preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id))),
                     'qty' => $lineItem['qty'],
-                    'description' => substr($description, 0, 20) . '...',
+                    'src' => wp_get_attachment_image_url($product->get_image_id(), 'full'),
+                    'url' => preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id))),
                     'email' => ''
                 ];
 
@@ -316,7 +312,7 @@ class WC_Gateway_Ourpass extends WC_Payment_Gateway
 
             if($ourpass_params['items'][0]) {
                 $ourpass_params['name'] = $ourpass_params['items'][0]['name'];
-                $ourpass_params['description'] = substr($ourpass_params['items'][0]['description'], 0, 20) . '...';
+                $ourpass_params['description'] = $ourpass_params['items'][0]['description'];
                 $ourpass_params['src'] = $ourpass_params['items'][0]['src'];
                 $ourpass_params['url'] = $ourpass_params['items'][0]['url'];
             }
