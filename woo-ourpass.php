@@ -17,9 +17,63 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+define('OURPASSWC_PATH', plugin_dir_path(__FILE__));
+define('OURPASSWC_URL', plugin_dir_url(__FILE__));
+define('OURPASSWC_VERSION', '1.0.2');
+// OLD VERSION
 define('WC_OURPASS_MAIN_FILE', __FILE__);
 define('WC_OURPASS_URL', untrailingslashit(plugins_url('/', __FILE__)));
 define('WC_OURPASS_VERSION', '1.0.2');
+
+// WooCommerce version utilities.
+require_once OURPASSWC_PATH . 'includes/version.php';
+
+// Check whether the woocommerce plugin is active.
+if ( ourpasswc_woocommerce_is_active() ) {
+	// Fast debug functions.
+	require_once OURPASSWC_PATH . 'includes/debug.php';
+	// WP Admin plugin settings.
+	require_once OURPASSWC_PATH . 'includes/admin/settings.php';
+	// Loads Fast js and css assets.
+	require_once OURPASSWC_PATH . 'includes/assets.php';
+	// Loads fast utilities.
+	require_once OURPASSWC_PATH . 'includes/utilities.php';
+	// Adds Fast Checkout button to store.
+	require_once OURPASSWC_PATH . 'includes/checkout.php';
+	// // Adds Fast Login button to store.
+	// require_once OURPASSWC_PATH . 'includes/login.php';
+	// Registers routes for the plugin API endpoints.
+	require_once OURPASSWC_PATH . 'includes/routes.php';
+	// // Add Fast button shortcodes.
+	// require_once OURPASSWC_PATH . 'includes/shortcodes.php';
+	// // Add Fast button widgets.
+	// require_once OURPASSWC_PATH . 'includes/widgets.php';
+	// // Add Fast button blocks.
+	// require_once OURPASSWC_PATH . 'includes/blocks.php';
+	// // Add Fast failed/disabled webhook handler.
+	// require_once OURPASSWC_PATH . 'includes/webhooks.php';
+	// // Add tools to support third-party plugins.
+	// require_once OURPASSWC_PATH . 'includes/third-party.php';
+	// // Add Freemius integration.
+	// require_once OURPASSWC_PATH . 'includes/class-freemius.php';
+}
+
+define('OURPASSWC_PLUGIN_ACTIVATED', 'ourpasswc_plugin_activated');
+/**
+ * Add a flag indicating that the plugin was just activated.
+ */
+function ourpasswc_plugin_activated()
+{
+    // First make sure that WooCommerce is installed and active.
+    if (ourpasswc_woocommerce_is_active()) {
+        // Add a flag to show that the plugin was activated.
+        add_option(OURPASSWC_PLUGIN_ACTIVATED, true);
+    }
+}
+register_activation_hook(__FILE__, 'ourpasswc_plugin_activated');
+
+
+
 
 /**
  * Initialize OurPass WooCommerce payment gateway.
@@ -27,7 +81,7 @@ define('WC_OURPASS_VERSION', '1.0.2');
 function tbz_wc_ourpass_init()
 {
     if (!class_exists('WC_Payment_Gateway')) {
-        add_action('admin_notices', 'tbz_wc_ourpass_wc_missing_notice');
+        // add_action('admin_notices', 'tbz_wc_ourpass_wc_missing_notice');
         return;
     }
 
@@ -39,7 +93,7 @@ function tbz_wc_ourpass_init()
 
     add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'tbz_woo_ourpass_plugin_action_links');
 }
-add_action('plugins_loaded', 'tbz_wc_ourpass_init', 99);
+// add_action('plugins_loaded', 'tbz_wc_ourpass_init', 99);
 
 
 /**

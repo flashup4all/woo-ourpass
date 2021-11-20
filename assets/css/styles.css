@@ -1,0 +1,114 @@
+.ourpass-settings td,
+.ourpass-settings textarea,
+.ourpass-settings input,
+.ourpass-settings select {
+	font-family: "Lucida Grande";
+	font-size: 12px;
+}
+@media screen and (min-width: 783px) {
+	.ourpass-settings .input-field {
+		min-height: 40px;
+		width: 400px;
+	}
+}
+.ourpass-settings textarea {
+	resize: none;
+}
+
+.ourpass-image-select {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 -10px;
+	padding-top: 10px;
+}
+.ourpass-image-select--item {
+	flex-basis: 50%;
+	padding: 0 10px;
+	margin: 0 0 20px;
+	box-sizing: border-box;
+}
+
+@media screen and (max-width: 480px) {
+	.ourpass-image-select--item {
+		flex-basis: 100%;
+	}
+}
+
+.ourpass-image-select--label-text {
+	display: block;
+	margin-bottom: 6px;
+	line-height: 20px;
+}
+.ourpass-image-select--image {
+	max-width: 100%;
+	height: auto;
+	border: 2px solid #c3c4c7;
+}
+.ourpass-image-select--input:checked + label .ourpass-image-select--label-text {
+	font-weight: bold;
+}
+.ourpass-image-select--input:checked + label .ourpass-image-select--image {
+	border: 2px solid #000;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* NOTIFICATION */
+.ourpass-notice {
+	margin: 5px 0 15px;
+	border: 1px solid #c3c4c7;
+	border-left-width: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	padding: 1px 12px;
+	background-color: #fff;
+}
+.ourpass-notice:first-child {
+	margin-top: 15px;
+}
+.ourpass-notice-success {
+	border-left-color: #00a32a;
+}
+.ourpass-notice-warning {
+	border-left-color: #dba617;
+}
+.ourpass-notice-error {
+	border-left-color: #d63638;
+}
+
+/* FOOTER */
+.ourpass-footer {
+	padding: 10px 0;
+	border-top: 1px solid #c3c4c7;
+	border-bottom: 1px solid #c3c4c7;
+}
+.ourpass-footer-links {
+	margin: 0 -8px;
+	padding: 0;
+	list-style: none;
+}
+.ourpass-footer-link {
+	display: inline-block;
+	margin: 4px 8px;
+}
+.ourpass-footer-link a {
+	color: #000;
+	text-decoration: none;
+}
+.ourpass-footer-link a:hover {
+	text-decoration: underline;
+}
+@media (max-width: 782px) {
+	.ourpass-footer-link.alignright {
+		float: none;
+	}
+}
+
+/* STATUS */
+.fast-status {
+	padding-bottom: 40px;
+}
+.fast-status .dashicons-dismiss:before {
+	color: #d63638;
+}
+.fast-status .dashicons-yes-alt:before {
+	color: #00a32a;
+}
