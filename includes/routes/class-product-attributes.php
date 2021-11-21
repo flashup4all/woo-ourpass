@@ -71,7 +71,7 @@ class OurPass_Routes_Product_Attributes extends OurPass_Routes_Route {
 				}
 
 				// Get attribute labels.
-				$attribue_labels = array();
+				$attribute_labels = array();
 
 				$attributes      = $product->get_attributes();
 

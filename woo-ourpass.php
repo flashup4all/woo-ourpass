@@ -40,10 +40,9 @@ if ( ourpasswc_woocommerce_is_active() ) {
 	require_once OURPASSWC_PATH . 'includes/utilities.php';
 	// Adds Fast Checkout button to store.
 	require_once OURPASSWC_PATH . 'includes/checkout.php';
-	// // Adds Fast Login button to store.
-	// require_once OURPASSWC_PATH . 'includes/login.php';
 	// Registers routes for the plugin API endpoints.
 	require_once OURPASSWC_PATH . 'includes/routes.php';
+    
 	// // Add Fast button shortcodes.
 	// require_once OURPASSWC_PATH . 'includes/shortcodes.php';
 	// // Add Fast button widgets.

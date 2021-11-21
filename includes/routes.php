@@ -11,6 +11,7 @@ define( 'OURPASSWC_ROUTES_BASE', 'wc/ourpass/v1' );
 // Load route base class.
 require_once OURPASSWC_PATH . 'includes/routes/class-route.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-cart.php';
+require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-product.php';
 
 // Provides an API for polling shipping options.
 require_once OURPASSWC_PATH . 'includes/routes/class-shipping.php';
@@ -38,6 +39,7 @@ function ourpasswc_rest_api_init() {
 	new OurPass_Routes_Plugin_Info();
 
 	new OurPass_Routes_OurPass_Data_From_Cart();
+	new OurPass_Routes_OurPass_Data_From_Product();
 
 	// Register a route to collect all possible shipping locations.
 	new OurPass_Routes_Shipping_Zones();

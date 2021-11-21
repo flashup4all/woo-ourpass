@@ -240,7 +240,6 @@ function ourpasswc_get_button_styles( $button_type = '' ) {
 	$types = array(
 		'pdp'       => OURPASSWC_SETTING_PDP_BUTTON_STYLES,
 		'mini_cart' => OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES,
-		'login'     => OURPASSWC_SETTING_LOGIN_BUTTON_STYLES,
 		'checkout'  => OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES,
 		'cart'      => OURPASSWC_SETTING_CART_BUTTON_STYLES,
 	);

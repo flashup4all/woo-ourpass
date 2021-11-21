@@ -5,6 +5,7 @@
  * @package Fast
  */
 
+define('OURPASSWC_ENVIRONMENT', 'sandbox');
 define('OURPASSWC_SETTINGS_TIMESTAMPS', 'ourpasswc_settings_timestamps');
 // APP INFO SETTINGS
 define( 'OURPASSWC_SETTING_DEBUG_MODE', 'ourpasswc_debug_mode' );
@@ -26,31 +27,22 @@ define('OURPASSWC_ONBOARDING_URL', 'https://merchant.ourpass.co');
 define('OURPASSWC_SUPPORTED_CURRENCY', 'NGN');
 
 
-
-
-
-
-
-define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES', 'fastwc_load_button_styles' );
-define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'fast load button styles not set' );
-define( 'OURPASSWC_SETTING_PDP_BUTTON_STYLES', 'fast_pdp_button_styles' );
-define( 'OURPASSWC_SETTING_CART_BUTTON_STYLES', 'fast_cart_button_styles' );
-define( 'OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES', 'fast_mini_cart_button_styles' );
-define( 'OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES', 'fast_checkout_button_styles' );
-define( 'OURPASSWC_SETTING_LOGIN_BUTTON_STYLES', 'fast_login_button_styles' );
-
-define( 'OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER', 'fastwc_show_login_button_footer' );
-define( 'OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET', 'fast login in footer not set' );
+define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES', 'ourpasswc_load_button_styles' );
+define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'ourpass load button styles not set' );
+define( 'OURPASSWC_SETTING_PDP_BUTTON_STYLES', 'ourpass_pdp_button_styles' );
+define( 'OURPASSWC_SETTING_CART_BUTTON_STYLES', 'ourpass_cart_button_styles' );
+define( 'OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES', 'ourpass_mini_cart_button_styles' );
+define( 'OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES', 'ourpass_checkout_button_styles' );
 
 define('OURPASSWC_SETTING_USE_DARK_MODE', 'ourpasswc_use_dark_mode');
 define('OURPASSWC_SETTING_DISABLE_MULTICURRENCY', 'ourpasswc_disable_multicurrency');
-
-define( 'OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'fast_pdp_button_hook_other' );
-
-define( 'OURPASSWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'fastwc_do_init_%s' );
+define( 'OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'ourpass_pdp_button_hook_other' );
+define( 'OURPASSWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'ourpasswc_do_init_%s' );
 
 
 
+define('OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER', 'ourpasswc_show_login_button_footer');
+define('OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET', 'ourpass login in footer not set');
 
 
 
@@ -64,12 +56,16 @@ define( 'OURPASSWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
 define(
 	'OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',
 	<<<CSS
-.fast-pdp-wrapper {
+.ourpass-pdp-wrapper {
   padding: 21px 0 20px 0;
   margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.fast-pdp-or {
+.ourpass-pdp-or {
   position: relative;
   top: 21px;
   width: 40px;
@@ -82,12 +78,12 @@ define(
   background: white;
 }
 
-.woocommerce_after_add_to_cart_button .fast-pdp-or {
+.woocommerce_after_add_to_cart_button .ourpass-pdp-or {
   top: -22px;
 }
 
 @media only screen and (max-width: 767px) {
-  .fast-pdp-wrapper {
+  .ourpass-pdp-wrapper {
     border-bottom: 1px solid #dfdfdf;
     border-radius: none;
     padding-right: 1%;
@@ -96,7 +92,7 @@ define(
 }
 
 @media only screen and (min-width: 768px) {
-  .fast-pdp-wrapper {
+  .ourpass-pdp-wrapper {
     border: 1px solid #dfdfdf;
     border-radius: 5px;
     padding-right: 10%;
@@ -109,12 +105,16 @@ CSS
 define(
 	'OURPASSWC_SETTING_CART_BUTTON_STYLES_DEFAULT',
 	<<<CSS
-.fast-cart-wrapper {
+.ourpass-cart-wrapper {
   padding: 21px 0 20px 0;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.fast-cart-or {
+.ourpass-cart-or {
   position: relative;
   top: 21px;
   width: 40px;
@@ -128,7 +128,7 @@ define(
 }
 
 @media only screen and (max-width: 767px) {
-  .fast-cart-wrapper {
+  .ourpass-cart-wrapper {
     border-bottom: 1px solid #dfdfdf;
     border-radius: none;
     padding-right: 1%;
@@ -137,7 +137,7 @@ define(
 }
 
 @media only screen and (min-width: 768px) {
-  .fast-cart-wrapper {
+  .ourpass-cart-wrapper {
     border: 1px solid #dfdfdf;
     border-radius: 5px;
     padding-right: 10%;
@@ -150,14 +150,18 @@ CSS
 define(
 	'OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT',
 	<<<CSS
-.fast-mini-cart-wrapper {
+.ourpass-mini-cart-wrapper {
   height: 68px;
   clear: both;
   border-bottom: 1px solid #dfdfdf;
   padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.fast-mini-cart-or {
+.ourpass-mini-cart-or {
   position: relative;
   background: inherit;
   width: 40px;
@@ -172,12 +176,12 @@ CSS
 define(
 	'OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT',
 	<<<CSS
-.fast-checkout-wrapper {
+.ourpass-checkout-wrapper {
   padding: 21px 0 20px 0;
   margin-bottom: 20px;
 }
 
-.fast-checkout-or {
+.ourpass-checkout-or {
   position: relative;
   top: 21px;
   width: 40px;
@@ -191,7 +195,7 @@ define(
 }
 
 @media only screen and (max-width: 767px) {
-  .fast-checkout-wrapper {
+  .ourpass-checkout-wrapper {
     border-bottom: 1px solid #dfdfdf;
     border-radius: none;
     padding-right: 1%;
@@ -200,39 +204,11 @@ define(
 }
 
 @media only screen and (min-width: 768px) {
-  .fast-checkout-wrapper {
+  .ourpass-checkout-wrapper {
     border: 1px solid #dfdfdf;
     border-radius: 5px;
     padding-right: 10%;
     padding-left: 10%;
-  }
-}
-CSS
-);
-
-define(
-	'OURPASSWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT',
-	<<<CSS
-.fast-login-wrapper {
-  border: 1.25px solid #d3ced2;
-  padding: 16px 30% 16px 30%;
-  margin-left: 16px;
-  margin-right: 16px;
-}
-
-@media (min-width: 560px) {
-  .fast-login-wrapper {
-    width: 100%;
-    padding: 16px 30% 16px 30%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (min-width: 1006px) {
-  .fast-login-wrapper {
-    width: 1006px;
-    padding: 16px 300px 16px 300px;
   }
 }
 CSS

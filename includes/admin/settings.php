@@ -35,14 +35,12 @@ function ourpasswc_updated_option($option, $old_value, $value)
         OURPASSWC_SETTING_LIVE_PUBLIC_KEY,
         OURPASSWC_SETTING_LIVE_SECRET_KEY,
         //====
-        OURPASSWC_SETTING_FAST_JS_URL,
-        OURPASSWC_SETTING_FAST_JWKS_URL,
-        OURPASSWC_SETTING_ONBOARDING_URL,
         OURPASSWC_SETTING_PDP_BUTTON_STYLES,
         OURPASSWC_SETTING_CART_BUTTON_STYLES,
         OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES,
         OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES,
-        OURPASSWC_SETTING_LOGIN_BUTTON_STYLES,
+        //=====
+        OURPASSWC_SETTING_ONBOARDING_URL,
         OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS,
         OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE,
         OURPASSWC_SETTING_PDP_BUTTON_HOOK,
@@ -177,6 +175,7 @@ function ourpasswc_get_settings_tabs()
         array(
             'ourpass_app_info'  => __('App Info'),
             'ourpass_options'   => __('Options'),
+            'ourpass_styles'   => __('Styles'),
         )
     );
 }
@@ -219,6 +218,15 @@ function ourpasswc_admin_setup_sections()
     register_setting($section_name, OURPASSWC_SETTING_PDP_BUTTON_HOOK);
     register_setting($section_name, OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS);
     register_setting($section_name, OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE);
+
+    $section_name = 'ourpass_styles';
+    add_settings_section($section_name, '', false, $section_name);
+    register_setting($section_name, OURPASSWC_SETTING_LOAD_BUTTON_STYLES);
+    register_setting($section_name, OURPASSWC_SETTING_USE_DARK_MODE);
+    register_setting($section_name, OURPASSWC_SETTING_PDP_BUTTON_STYLES);
+    register_setting($section_name, OURPASSWC_SETTING_CART_BUTTON_STYLES);
+    register_setting($section_name, OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES);
+    register_setting($section_name, OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES);
 }
 
 /**
@@ -240,6 +248,16 @@ function ourpasswc_admin_setup_fields()
     add_settings_field(OURPASSWC_SETTING_PDP_BUTTON_HOOK, __('Select Product Button Location'), 'ourpasswc_pdp_button_hook', $settings_section, $settings_section);
     add_settings_field(OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS, __('Hide Buttons for these Products'), 'ourpasswc_hide_button_products', $settings_section, $settings_section);
     add_settings_field(OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE, __('Checkout Redirect Page'), 'ourpasswc_checkout_redirect_page', $settings_section, $settings_section);
+
+    // Button style settings.
+    $settings_section = 'ourpass_styles';
+    add_settings_field(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, __('Load Button Styles'), 'ourpasswc_load_button_styles', $settings_section, $settings_section);
+    add_settings_field(OURPASSWC_SETTING_USE_DARK_MODE, __('Enable Dark Mode'), 'ourpasswc_setting_use_dark_mode', $settings_section, $settings_section);
+    add_settings_field(OURPASSWC_SETTING_PDP_BUTTON_STYLES, __('Product page button styles'), 'ourpasswc_pdp_button_styles_content', $settings_section, $settings_section);
+    add_settings_field(OURPASSWC_SETTING_CART_BUTTON_STYLES, __('Cart page button styles'), 'ourpasswc_cart_button_styles_content', $settings_section, $settings_section);
+    add_settings_field(OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES, __('Mini cart widget button styles'), 'ourpasswc_mini_cart_button_styles_content', $settings_section, $settings_section);
+    add_settings_field(OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES, __('Checkout page button styles'), 'ourpasswc_checkout_button_styles_content', $settings_section, $settings_section);
+
 }
 
 
@@ -441,6 +459,108 @@ function ourpasswc_checkout_redirect_page()
 }
 
 /**
+ * Renders a checkbox to set whether or not to load the button styles.
+ */
+function ourpasswc_load_button_styles()
+{
+    $ourpasswc_load_button_styles = get_option(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET);
+
+    if (OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET === $ourpasswc_load_button_styles) {
+        // If the option is OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET, then it hasn't yet been set. In this case, we
+        // want to configure it to true.
+        $ourpasswc_load_button_styles = '1';
+        update_option(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, $ourpasswc_load_button_styles);
+    }
+
+    ourpasswc_settings_field_checkbox(
+        array(
+            'name'        => OURPASSWC_SETTING_LOAD_BUTTON_STYLES,
+            'current'     => $ourpasswc_load_button_styles,
+            'label'       => __('Load the button styles as configured in the settings.'),
+            'description' => __('When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the Fast buttons.'),
+        )
+    );
+}
+
+/**
+ * Renders a checkbox to set whether or not to enable dark mode.
+ */
+function ourpasswc_setting_use_dark_mode()
+{
+    $ourpasswc_use_dark_mode = get_option(OURPASSWC_SETTING_USE_DARK_MODE, 0);
+
+    ourpasswc_settings_field_checkbox(
+        array(
+            'name'        => OURPASSWC_SETTING_USE_DARK_MODE,
+            'current'     => $ourpasswc_use_dark_mode,
+            'label'       => __('Enable Dark Mode for the Fast Buttons.'),
+            'description' => __('When this box is checked, the Fast buttons will be rendered in dark mode.'),
+        )
+    );
+}
+
+/**
+ * Renders the PDP button styles field.
+ */
+function ourpasswc_pdp_button_styles_content()
+{
+    $ourpasswc_setting_pdp_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_PDP_BUTTON_STYLES, OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT);
+
+    ourpasswc_settings_field_textarea(
+        array(
+            'name'  => OURPASSWC_SETTING_PDP_BUTTON_STYLES,
+            'value' => $ourpasswc_setting_pdp_button_styles,
+        )
+    );
+}
+
+/**
+ * Renders the cart button styles field.
+ */
+function ourpasswc_cart_button_styles_content()
+{
+    $ourpasswc_setting_cart_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_CART_BUTTON_STYLES, OURPASSWC_SETTING_CART_BUTTON_STYLES_DEFAULT);
+
+    ourpasswc_settings_field_textarea(
+        array(
+            'name'  => OURPASSWC_SETTING_CART_BUTTON_STYLES,
+            'value' => $ourpasswc_setting_cart_button_styles,
+        )
+    );
+}
+
+/**
+ * Renders the mini-cart button styles field.
+ */
+function ourpasswc_mini_cart_button_styles_content()
+{
+    $ourpasswc_setting_mini_cart_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES, OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT);
+
+    ourpasswc_settings_field_textarea(
+        array(
+            'name'  => OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES,
+            'value' => $ourpasswc_setting_mini_cart_button_styles,
+        )
+    );
+}
+
+/**
+ * Renders the checkout button styles field.
+ */
+function ourpasswc_checkout_button_styles_content()
+{
+    $ourpasswc_setting_checkout_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES, OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT);
+
+    ourpasswc_settings_field_textarea(
+        array(
+            'name'  => OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES,
+            'value' => $ourpasswc_setting_checkout_button_styles,
+        )
+    );
+}
+
+
+/**
  * Get the Fast APP ID.
  *
  * @return bool
@@ -578,124 +698,6 @@ function ourpasswc_disable_multicurrency_content()
     );
 }
 
-
-/**
- * Renders a checkbox to set whether or not to load the button styles.
- */
-function ourpasswc_load_button_styles()
-{
-    $ourpasswc_load_button_styles = get_option(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET);
-
-    if (OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET === $ourpasswc_load_button_styles) {
-        // If the option is OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET, then it hasn't yet been set. In this case, we
-        // want to configure it to true.
-        $ourpasswc_load_button_styles = '1';
-        update_option(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, $ourpasswc_load_button_styles);
-    }
-
-    ourpasswc_settings_field_checkbox(
-        array(
-            'name'        => OURPASSWC_SETTING_LOAD_BUTTON_STYLES,
-            'current'     => $ourpasswc_load_button_styles,
-            'label'       => __('Load the button styles as configured in the settings.'),
-            'description' => __('When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the Fast buttons.'),
-        )
-    );
-}
-
-/**
- * Renders a checkbox to set whether or not to enable dark mode.
- */
-function ourpasswc_setting_use_dark_mode()
-{
-    $ourpasswc_use_dark_mode = get_option(OURPASSWC_SETTING_USE_DARK_MODE, 0);
-
-    ourpasswc_settings_field_checkbox(
-        array(
-            'name'        => OURPASSWC_SETTING_USE_DARK_MODE,
-            'current'     => $ourpasswc_use_dark_mode,
-            'label'       => __('Enable Dark Mode for the Fast Buttons.'),
-            'description' => __('When this box is checked, the Fast buttons will be rendered in dark mode.'),
-        )
-    );
-}
-
-/**
- * Renders the PDP button styles field.
- */
-function ourpasswc_pdp_button_styles_content()
-{
-    $ourpasswc_setting_pdp_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_PDP_BUTTON_STYLES, OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT);
-
-    ourpasswc_settings_field_textarea(
-        array(
-            'name'  => 'fast_pdp_button_styles',
-            'value' => $ourpasswc_setting_pdp_button_styles,
-        )
-    );
-}
-
-/**
- * Renders the cart button styles field.
- */
-function ourpasswc_cart_button_styles_content()
-{
-    $ourpasswc_setting_cart_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_CART_BUTTON_STYLES, OURPASSWC_SETTING_CART_BUTTON_STYLES_DEFAULT);
-
-    ourpasswc_settings_field_textarea(
-        array(
-            'name'  => 'fast_cart_button_styles',
-            'value' => $ourpasswc_setting_cart_button_styles,
-        )
-    );
-}
-
-/**
- * Renders the mini-cart button styles field.
- */
-function ourpasswc_mini_cart_button_styles_content()
-{
-    $ourpasswc_setting_mini_cart_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES, OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES_DEFAULT);
-
-    ourpasswc_settings_field_textarea(
-        array(
-            'name'  => 'fast_mini_cart_button_styles',
-            'value' => $ourpasswc_setting_mini_cart_button_styles,
-        )
-    );
-}
-
-/**
- * Renders the checkout button styles field.
- */
-function ourpasswc_checkout_button_styles_content()
-{
-    $ourpasswc_setting_checkout_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES, OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES_DEFAULT);
-
-    ourpasswc_settings_field_textarea(
-        array(
-            'name'  => 'fast_checkout_button_styles',
-            'value' => $ourpasswc_setting_checkout_button_styles,
-        )
-    );
-}
-
-/**
- * Renders the login button styles field.
- */
-function ourpasswc_login_button_styles_content()
-{
-    $ourpasswc_setting_login_button_styles = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_LOGIN_BUTTON_STYLES, OURPASSWC_SETTING_LOGIN_BUTTON_STYLES_DEFAULT);
-
-    ourpasswc_settings_field_textarea(
-        array(
-            'name'  => 'fast_login_button_styles',
-            'value' => $ourpasswc_setting_login_button_styles,
-        )
-    );
-}
-
-
 /**
  * Renders the PDP Button Hook alternate field.
  */
@@ -711,6 +713,28 @@ function ourpasswc_pdp_button_hook_other()
         )
     );
 }
+
+/**
+ * Renders the onboarding URL field.
+ */
+function ourpasswc_onboarding_url_content()
+{
+    $url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_ONBOARDING_URL, OURPASSWC_ONBOARDING_URL);
+
+    ourpasswc_settings_field_input(
+        array(
+            'name'  => OURPASSWC_SETTING_ONBOARDING_URL,
+            'value' => $url,
+        )
+    );
+}
+
+
+
+
+
+
+
 
 /**
  * Renders the show login in footer field.
@@ -762,21 +786,6 @@ function ourpasswc_ourpasswc_jwks_content()
         array(
             'name'  => 'fast_fast_jwks_url',
             'value' => $ourpasswc_setting_fast_jwks_url,
-        )
-    );
-}
-
-/**
- * Renders the onboarding URL field.
- */
-function ourpasswc_onboarding_url_content()
-{
-    $url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_ONBOARDING_URL, OURPASSWC_ONBOARDING_URL);
-
-    ourpasswc_settings_field_input(
-        array(
-            'name'  => 'fast_onboarding_url',
-            'value' => $url,
         )
     );
 }
