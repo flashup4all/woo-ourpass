@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fast WooCommerce product attributes route object.
+ * OurPass WooCommerce product attributes route object.
  */
 class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
 {

@@ -1,8 +1,8 @@
 <?php
 /**
- * Fast PDP checkout template.
+ * OurPass PDP checkout template.
  *
- * @package Fast
+ * @package OurPass
  */
 
 $ourpasswc_pdp_button_hook = ourpasswc_get_pdp_button_hook();

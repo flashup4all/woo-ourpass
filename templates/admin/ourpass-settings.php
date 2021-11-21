@@ -1,8 +1,8 @@
 <?php
 /**
- * Fast admin settings page template.
+ * OurPass admin settings page template.
  *
- * @package Fast
+ * @package OurPass
  */
 
 $ourpasswc_tabs       = ourpasswc_get_settings_tabs();

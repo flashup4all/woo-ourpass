@@ -2,7 +2,7 @@
 /**
  * Functions to check for WooCommerce and its version.
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
@@ -18,7 +18,7 @@ function ourpasswc_woocommerce_is_active() {
 	$wc_is_active = is_plugin_active( 'woocommerce/woocommerce.php' );
 
 	if ( ! $wc_is_active ) {
-		// Add an admin notice that WooCommerce must be active in order for Fast to work.
+		// Add an admin notice that WooCommerce must be active in order for OurPass to work.
 		add_action(
 			'admin_notices',
 			'ourpasswc_settings_admin_notice_woocommerce_not_installed'

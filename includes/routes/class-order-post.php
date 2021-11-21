@@ -41,7 +41,7 @@ class OurPass_Routes_Order_Post extends OurPass_Routes_Route {
 	}
 
 	/**
-	 * Create an order from the payload passed from Fast.
+	 * Create an order from the payload passed from OurPass.
 	 *
 	 * @param WP_REST_Request $request JSON request for shipping endpoint.
 	 *

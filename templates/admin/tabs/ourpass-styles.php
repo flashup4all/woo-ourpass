@@ -1,8 +1,8 @@
 <?php
 /**
- * Fast settings Styles tab template.
+ * OurPass settings Styles tab template.
  *
- * @package Fast
+ * @package OurPass
  */
 
 ourpasswc_load_template(

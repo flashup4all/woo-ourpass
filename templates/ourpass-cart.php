@@ -1,8 +1,8 @@
 <?php
 /**
- * Fast cart checkout template.
+ * OurPass cart checkout template.
  *
- * @package Fast
+ * @package OurPass
  */
 
 ?>

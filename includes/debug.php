@@ -1,12 +1,12 @@
 <?php
 /**
- * Fast Debug Mode to add message to WC_Logger
+ * OurPass Debug Mode to add message to WC_Logger
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
- * Check if Fast debug mode is enabled.
+ * Check if OurPass debug mode is enabled.
  *
  * @return bool
  */
@@ -17,7 +17,7 @@ function ourpasswc_debug_mode_enabled() {
 }
 
 /**
- * Log a message if Fast debug mode is enabled.
+ * Log a message if OurPass debug mode is enabled.
  *
  * @param string $level   WooCommerce log level. One of the following:
  *                          'emergency': System is unusable.
@@ -38,7 +38,7 @@ function ourpasswc_log( $level, $message ) {
 }
 
 /**
- * Adds an emergency level message if Fast debug mode is enabled
+ * Adds an emergency level message if OurPass debug mode is enabled
  *
  * System is unusable.
  *
@@ -51,7 +51,7 @@ function ourpasswc_log_emergency( $message ) {
 }
 
 /**
- * Adds an alert level message if Fast debug mode is enabled.
+ * Adds an alert level message if OurPass debug mode is enabled.
  *
  * Action must be taken immediately.
  * Example: Entire website down, database unavailable, etc.
@@ -65,7 +65,7 @@ function ourpasswc_log_alert( $message ) {
 }
 
 /**
- * Adds a critical level message if Fast debug mode is enabled.
+ * Adds a critical level message if OurPass debug mode is enabled.
  *
  * Critical conditions.
  * Example: Application component unavailable, unexpected exception.
@@ -79,7 +79,7 @@ function ourpasswc_log_critical( $message ) {
 }
 
 /**
- * Adds an error level message if Fast debug mode is enabled.
+ * Adds an error level message if OurPass debug mode is enabled.
  *
  * Runtime errors that do not require immediate action but should typically be logged
  * and monitored.
@@ -93,7 +93,7 @@ function ourpasswc_log_error( $message ) {
 }
 
 /**
- * Adds a warning level message if Fast debug mode is enabled.
+ * Adds a warning level message if OurPass debug mode is enabled.
  *
  * Exceptional occurrences that are not errors.
  *
@@ -109,7 +109,7 @@ function ourpasswc_log_warning( $message ) {
 }
 
 /**
- * Adds a notice level message if Fast debug mode is enabled.
+ * Adds a notice level message if OurPass debug mode is enabled.
  *
  * Normal but significant events.
  *
@@ -122,7 +122,7 @@ function ourpasswc_log_notice( $message ) {
 }
 
 /**
- * Adds a info level message if Fast debug mode is enabled.
+ * Adds a info level message if OurPass debug mode is enabled.
  *
  * Interesting events.
  * Example: User logs in, SQL logs.
@@ -136,7 +136,7 @@ function ourpasswc_log_info( $message ) {
 }
 
 /**
- * Adds a debug level message if Fast debug mode is enabled.
+ * Adds a debug level message if OurPass debug mode is enabled.
  *
  * Detailed debug information.
  *

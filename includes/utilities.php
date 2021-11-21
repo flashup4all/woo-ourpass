@@ -1,12 +1,12 @@
 <?php
 /**
- * Common utility functions for the Fast plugin.
+ * Common utility functions for the OurPass plugin.
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
- * Load a Fast temlate.
+ * Load a OurPass template.
  *
  * @param string $template_name The name of the template to load.
  * @param array  $args          Optional. Args to pass to the template. Requires WP 5.5+.
@@ -50,10 +50,6 @@ function ourpasswc_load_template( $template_name, $args = array() ) {
 function ourpasswc_get_pdp_button_hook() {
 	$ourpasswc_pdp_button_hook = get_option( OURPASSWC_SETTING_PDP_BUTTON_HOOK, OURPASSWC_DEFAULT_PDP_BUTTON_HOOK );
 
-	if ( 'other' === $ourpasswc_pdp_button_hook ) {
-		$ourpasswc_pdp_button_hook = get_option( OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER, OURPASSWC_DEFAULT_PDP_BUTTON_HOOK );
-	}
-
 	return ! empty( $ourpasswc_pdp_button_hook ) ? $ourpasswc_pdp_button_hook : OURPASSWC_DEFAULT_PDP_BUTTON_HOOK;
 }
 
@@ -87,7 +83,7 @@ function ourpasswc_get_products_to_hide_buttons() {
  */
 function ourpasswc_product_is_supported( $product_id ) {
 	/**
-	 * Filter to determine if a product is supported by Fast Checkout. Returns true by default.
+	 * Filter to determine if a product is supported by OurPass Checkout. Returns true by default.
 	 *
 	 * @param bool $is_supported Flag to pass through the filters to set if the product is supported.
 	 * @param int  $product_id   The ID of the product to check.
@@ -157,7 +153,7 @@ function ourpasswc_product_is_supported_if_not_subscription( $is_supported, $pro
 add_filter( 'ourpasswc_product_is_supported', 'ourpasswc_product_is_supported_if_not_subscription', 10, 2 );
 
 /**
- * Detect if the product has any addons (Fast Checkout does not yet support these products).
+ * Detect if the product has any addons (OurPass Checkout does not yet support these products).
  *
  * @param int $product_id The ID of the product.
  *
@@ -182,7 +178,7 @@ function ourpasswc_product_has_addons( $product_id ) {
 }
 
 /**
- * Detect if the product is a grouped product (Fast Checkout does not yet support these products).
+ * Detect if the product is a grouped product (OurPass Checkout does not yet support these products).
  *
  * @param int $product_id The ID of the product.
  *
@@ -206,7 +202,7 @@ function ourpasswc_product_is_grouped( $product_id ) {
 }
 
 /**
- * Detect if the product is a subscription product (Fast Checkout does not yet support these products).
+ * Detect if the product is a subscription product (OurPass Checkout does not yet support these products).
  *
  * @param int $product_id The ID of the product.
  *
@@ -230,7 +226,7 @@ function ourpasswc_product_is_subscription( $product_id ) {
 }
 
 /**
- * Get Fast button styles.
+ * Get OurPass button styles.
  *
  * @param mixed|string|array $button_type Type of styles to get. Default to empty string for all.
  *
@@ -275,7 +271,7 @@ function ourpasswc_is_json( $string ) {
 }
 
 /**
- * Get the Fast product options string.
+ * Get the OurPass product options string.
  *
  * @param mixed|string|array $product_options The product options value.
  *
@@ -287,28 +283,4 @@ function ourpasswc_get_normalized_product_options( $product_options ) {
 	}
 
 	return ourpasswc_is_json( $product_options ) ? $product_options : '';
-}
-
-/**
- * Check whether or not to use dark mode.
- *
- * @param int $product_id Optional. The ID of the product.
- *
- * @return bool
- */
-function ourpasswc_use_dark_mode( $product_id = 0 ) {
-	$use_dark_mode = get_option( OURPASSWC_SETTING_USE_DARK_MODE, false );
-
-	/**
-	 * Filter the boolean for using dark mode. The product ID allows for setting
-	 * or disabling dark mode for specific products.
-	 *
-	 * @param bool $use_dark_mode The global dark mode setting.
-	 * @param int  $product_id    The ID of the product.
-	 *
-	 * @return bool
-	 */
-	$use_dark_mode = apply_filters( 'ourpass_use_dark_mode', $use_dark_mode, $product_id );
-
-	return $use_dark_mode;
 }

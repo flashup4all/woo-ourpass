@@ -1,8 +1,8 @@
 <?php
 /**
- * Fast settings App Info tab template.
+ * OurPass settings App Info tab template.
  *
- * @package Fast
+ * @package OurPass
  */
 
 ourpasswc_load_template(

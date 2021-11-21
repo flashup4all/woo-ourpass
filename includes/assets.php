@@ -3,11 +3,11 @@
 /**
  * Loads ourpass-woocommerce.js in footer.
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
- * Enqueue the Fast Woocommerce script.
+ * Enqueue the OurPass Woocommerce script.
  */
 function ourpasswc_enqueue_script()
 {

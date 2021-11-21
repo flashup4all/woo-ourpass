@@ -24,12 +24,12 @@ class OurPass_Routes_Order_Get extends OurPass_Routes_Route {
 		$order_id = $request['id'];
 
 		if ( empty( $order_id ) ) {
-			$response = new \WP_Error( 'no_order_id', __( 'No order ID.', 'fast' ) );
+			$response = new \WP_Error( 'no_order_id', __( 'No order ID.') );
 		} else {
 			$order = \wc_get_order( $order_id );
 
 			if ( empty( $order ) ) {
-				$response = new \WP_Error( 'invalid_order_id', __( 'Invalid order ID.', 'fast' ), $order_id );
+				$response = new \WP_Error( 'invalid_order_id', __( 'Invalid order ID.'), $order_id );
 			} else {
 				$response = new \WP_REST_Response( $order->get_data(), 200 );
 			}

@@ -1,12 +1,12 @@
 <?php
 /**
- * Conditions for determining if/when to hide the Fast Checkout buttons.
+ * Conditions for determining if/when to hide the OurPass Checkout buttons.
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
- * Check if we should hide the Fast Checkout PDP button.
+ * Check if we should hide the OurPass Checkout PDP button.
  *
  * @param int $product_id Optional. The ID of the product.
  *
@@ -26,7 +26,7 @@ function ourpasswc_should_hide_pdp_checkout_button( $product_id = 0 ) {
 	}
 
 	/**
-	 * Filter to set whether or not to hide the Fast Checkout PDP button. Returns false by default.
+	 * Filter to set whether or not to hide the OurPass Checkout PDP button. Returns false by default.
 	 *
 	 * @param bool       $should_hide Flag to pass through the filters for whether or not to hide the php checkout button.
 	 * @param WC_Product $product     The WooCommerce product object.
@@ -41,13 +41,13 @@ function ourpasswc_should_hide_pdp_checkout_button( $product_id = 0 ) {
 }
 
 /**
- * Check if we should hide the Fast Checkout cart button. Returns false by default.
+ * Check if we should hide the OurPass Checkout cart button. Returns false by default.
  *
  * @return bool
  */
 function ourpasswc_should_hide_cart_checkout_button() {
 	/**
-	 * Filter to set whether or not to hide the Fast Checkout cart button. Returns false by default.
+	 * Filter to set whether or not to hide the OurPass Checkout cart button. Returns false by default.
 	 *
 	 * @param bool $should_hide Flag to pass through the filters for whether or not to hide the cart checkout button.
 	 *
@@ -61,7 +61,7 @@ function ourpasswc_should_hide_cart_checkout_button() {
 }
 
 /**
- * Returns true if the Fast Login button should be hidden for any of the following reasons:
+ * Returns true if the OurPass Login button should be hidden for any of the following reasons:
  * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
  * - The OURPASSWC_SETTING_APP_ID option is empty.
  *
@@ -69,7 +69,7 @@ function ourpasswc_should_hide_cart_checkout_button() {
  */
 function ourpasswc_should_hide_login_button() {
 	/**
-	 * Filter to set whether or not to hide the Fast Login button. Returns false by default.
+	 * Filter to set whether or not to hide the OurPass Login button. Returns false by default.
 	 *
 	 * @param bool $should_hide Flag to pass through the filters for whether or not to hide the login button.
 	 *
@@ -83,8 +83,8 @@ function ourpasswc_should_hide_login_button() {
 }
 
 /**
- * Checks if the Fast Checkout button should be hidden for the current user based on the Test Mode field and their email
- * The button should be hidden for all non-Fast users if Test Mode is enabled, and should be visible for everyone if
+ * Checks if the OurPass Checkout button should be hidden for the current user based on the Test Mode field and their email
+ * The button should be hidden for all non-OurPass users if Test Mode is enabled, and should be visible for everyone if
  * Test Mode is disabled.
  *
  * @param bool $should_hide Flag from filter to hide or not hide the PDP button.
@@ -97,16 +97,8 @@ function ourpasswc_is_hidden_for_test_mode( $should_hide ) {
 		// If test mode option is not yet set (e.g. plugin was just installed), treat it as enabled.
 		// There is code in the settings page that actually sets this to enabled the first time the user views the form.
 		$ourpasswc_test_mode = get_option( OURPASSWC_SETTING_TEST_MODE, '1' );
-		// if ( $ourpasswc_test_mode ) {
-		// 	// In test mode, we only want to show the button if the user is an admin or their email ends with @fast.co.
-		// 	$current_user = wp_get_current_user();
-		// 	if ( ! preg_match( '/@fast.co$/i', $current_user->user_email ) && ! $current_user->has_cap( 'administrator' ) ) {
-		// 		// User is not an admin or a Fast employee. Return early so button never sees the light of day.
-		// 		$should_hide = true;
-		// 	}
-		// }
 
-		ourpasswc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for test mode.' );
+		ourpasswc_log_info( 'OurPass buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for test mode.' );
 	}
 
 	return $should_hide;
@@ -116,11 +108,11 @@ add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_is_hidden_f
 add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_is_hidden_for_test_mode', 1 );
 
 /**
- * Checks if the store's app ID is empty.
+ * Checks if the app secret and public key is empty.
  *
  * @param bool $should_hide Flag from filter to hide or not hide the PDP button.
  *
- * @return bool true if the app ID is empty, false otherwise
+ * @return bool true if the app secret and public is empty, false otherwise
  */
 function ourpasswc_is_app_key_empty( $should_hide ) {
 
@@ -130,7 +122,7 @@ function ourpasswc_is_app_key_empty( $should_hide ) {
 			$should_hide = true;
 		}
 
-		ourpasswc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for no app ID.' );
+		ourpasswc_log_info( 'OurPass buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for no app ID.' );
 	}
 
 	return $should_hide;
@@ -140,11 +132,11 @@ add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_is_app_key_
 add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_is_app_key_empty', 1 );
 
 /**
- * Checks if the store's app ID is empty.
+ * Checks if is supported currency.
  *
  * @param bool $should_hide Flag from filter to hide or not hide the PDP button.
  *
- * @return bool true if the app ID is empty, false otherwise
+ * @return bool true if is supported currency, false otherwise
  */
 function ourpasswc_should_hide_for_unsupported_country( $should_hide ) {
 
@@ -160,7 +152,7 @@ function ourpasswc_should_hide_for_unsupported_country( $should_hide ) {
             $should_hide = true;
 		}
 		
-		ourpasswc_log_info( 'Fast buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported currency.' );
+		ourpasswc_log_info( 'OurPass buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for unsupported currency.' );
 	}
 
 	return $should_hide;
@@ -170,7 +162,7 @@ add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_should_hide
 add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_should_hide_for_unsupported_country', 1 );
 
 /**
- * Determine if the Fast PDP button should be hidden for a specific product.
+ * Determine if the OurPass PDP button should be hidden for a specific product.
  *
  * @param bool       $should_hide Flag from filter to hide or not hide the PDP button.
  * @param WC_Product $product     The product to check.
@@ -197,7 +189,7 @@ function ourpasswc_should_hide_pdp_button_for_product( $should_hide, $product ) 
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_should_hide_pdp_button_for_product', 2, 2 );
 
 /**
- * Determine if the Fast PDP button should be hidden for an unsupported product.
+ * Determine if the OurPass PDP button should be hidden for an unsupported product.
  *
  * @param bool       $should_hide Flag from filter to hide or not hide the PDP button.
  * @param WC_Product $product     The product to check.
@@ -222,8 +214,8 @@ function ourpasswc_should_hide_pdp_button_for_unsupported_product( $should_hide,
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_should_hide_pdp_button_for_unsupported_product', 3, 2 );
 
 /**
- * Determine if the Fast PDP button should be hidden for an out-of-stock product.
- * Don't show Fast checkout on PDP if the product is out of stock or on backorder.
+ * Determine if the OurPass PDP button should be hidden for an out-of-stock product.
+ * Don't show OurPass checkout on PDP if the product is out of stock or on backorder.
  *
  * @param bool       $should_hide Flag from filter to hide or not hide the PDP button.
  * @param WC_Product $product     The product to check.
@@ -248,7 +240,7 @@ function ourpasswc_should_hide_pdp_button_for_out_of_stock_product( $should_hide
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_should_hide_pdp_button_for_out_of_stock_product', 4, 2 );
 
 /**
- * Determine if the Fast PDP button should be hidden for an external product (i.e. not purchased on this store).
+ * Determine if the OurPass PDP button should be hidden for an external product (i.e. not purchased on this store).
  *
  * @param bool       $should_hide Flag from filter to hide or not hide the PDP button.
  * @param WC_Product $product     The product to check.
@@ -272,7 +264,7 @@ function ourpasswc_should_hide_pdp_button_for_external_product( $should_hide, $p
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_should_hide_pdp_button_for_out_of_stock_product', 5, 2 );
 
 /**
- * Determine if the Fast cart button should be hidden for a specific product.
+ * Determine if the OurPass cart button should be hidden for a specific product.
  *
  * @param bool $should_hide Flag from filter to hide or not hide the cart button.
  *
@@ -375,19 +367,3 @@ function ourpasswc_should_hide_cart_checkout_button_because_too_many_coupons( $s
 	return $should_hide;
 }
 add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_should_hide_cart_checkout_button_because_too_many_coupons', 2 );
-
-/**
- * Check if the login button should be hidden because the user is logged in.
- *
- * @param bool $should_hide Flag from filter to hide or not hide the login button.
- *
- * @return bool
- */
-function ourpasswc_should_hide_login_button_for_logged_in_user( $should_hide ) {
-	$should_hide = is_user_logged_in() ? true : $should_hide;
-
-	ourpasswc_log_info( 'Login button' . ( $should_hide ? '' : ' not' ) . ' hidden for logged in user.' );
-
-	return $should_hide;
-}
-add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_should_hide_login_button_for_logged_in_user' );

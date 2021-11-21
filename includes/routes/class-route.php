@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fast route base class.
+ * OurPass route base class.
  */
 abstract class OurPass_Routes_Route {
 

@@ -2,7 +2,7 @@
 /**
  * Display admin notices.
  *
- * @package Fast
+ * @package OurPass
  */
 
 /**
@@ -23,7 +23,7 @@ function ourpasswc_maybe_display_admin_notices() {
 add_action( 'admin_init', 'ourpasswc_maybe_display_admin_notices' );
 
 /**
- * Maybe render the Fast "Become a Seller" CTA.
+ * Maybe render the OurPass "Become a Seller" CTA.
  *
  * @param string $context Optional. The context in which the CTA is to be loaded.
  */

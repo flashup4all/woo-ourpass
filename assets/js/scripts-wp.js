@@ -113,24 +113,24 @@ class OurPassCartCheckoutButton extends HTMLElement {
                 url: response.data.url,
                 items: response.data.items,
                 onSuccess: (response) => {
-                    jQuery.ajax({
-                        method: "POST",
-                        url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
-                    }).success((data) => {
-                        data = JSON.parse(data);
+                    // jQuery.ajax({
+                    //     method: "POST",
+                    //     url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
+                    // }).success((data) => {
+                    //     data = JSON.parse(data);
 
-                        if (data.status) {
-                            this.handleCompletedOrder();
-                            return;
-                        }
+                    //     if (data.status) {
+                    //         this.handleCompletedOrder();
+                    //         return;
+                    //     }
 
-                        this.displayErrorMessage('Error, please try again');
-                        jQuery('body').unblock();
+                    //     this.displayErrorMessage('Error, please try again');
+                    //     jQuery('body').unblock();
 
-                    }).error((err) => {
-                        this.displayErrorMessage('Error, please try again');
-                        jQuery('body').unblock();
-                    });
+                    // }).error((err) => {
+                    //     this.displayErrorMessage('Error, please try again');
+                    //     jQuery('body').unblock();
+                    // });
                 },
                 onClose: () => {
                     this.displayErrorMessage('Error, please try again');
@@ -255,6 +255,11 @@ class OurPassProductCheckoutButton extends HTMLElement {
     connectedCallback() {
         this.shadowRoot.querySelector("#ourpassButton")
             .addEventListener('click', () => this.startCheckoutProcess());
+
+        this.shadowRoot.querySelector(".tooltip")
+            .addEventListener('click', () => {
+                this.removeAttribute('invalid');
+            });
     }
 
     disconnectedCallback() {
@@ -378,32 +383,30 @@ class OurPassProductCheckoutButton extends HTMLElement {
                 url: response.data.url,
                 items: response.data.items,
                 onSuccess: (response) => {
-                    jQuery.ajax({
-                        method: "POST",
-                        url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
-                    }).success((data) => {
-                        data = JSON.parse(data);
+                    // jQuery.ajax({
+                    //     method: "POST",
+                    //     url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
+                    // }).success((data) => {
+                    //     data = JSON.parse(data);
 
-                        if (data.status) {
-                            jQuery('body').unblock();
-                            return;
-                        }
+                    //     if (data.status) {
+                    //         jQuery('body').unblock();
+                    //         return;
+                    //     }
 
-                        this.displayErrorMessage('Error, please try again');
-                        jQuery('body').unblock();
+                    //     this.displayErrorMessage('Error, please try again');
+                    //     jQuery('body').unblock();
 
-                    }).error((err) => {
-                        this.displayErrorMessage('Error, please try again');
-                        jQuery('body').unblock();
-                    });
+                    // }).error((err) => {
+                    //     this.displayErrorMessage('Error, please try again');
+                    //     jQuery('body').unblock();
+                    // });
                 },
                 onClose: () => {
                     this.displayErrorMessage('Error, please try again');
                     jQuery('body').unblock();
                 }
             });
-
-
         }).error((err) => {
             this.displayErrorMessage(err.responseJSON.message);
             jQuery('body').unblock();

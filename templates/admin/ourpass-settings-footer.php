@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Fast admin settings footer.
+ * OurPass admin settings footer.
  *
- * @package Fast
+ * @package OurPass
  */
 
-$ourpasswc_setting_fast_onboarding_url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_ONBOARDING_URL, OURPASSWC_ONBOARDING_URL);
+$ourpasswc_setting_ourpass_onboarding_url = OURPASSWC_ONBOARDING_URL;
 ?>
 
 <div class="ourpass-footer">
@@ -28,7 +28,7 @@ $ourpasswc_setting_fast_onboarding_url = ourpasswc_get_option_or_set_default(OUR
 			</a>
 		</li>
 		<li class="ourpass-footer-link">
-			<a href="<?php echo esc_url($ourpasswc_setting_fast_onboarding_url); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e('Login to the OurPass Merchant Dashboard'); ?>">
+			<a href="<?php echo esc_url($ourpasswc_setting_ourpass_onboarding_url); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e('Login to the OurPass Merchant Dashboard'); ?>">
 				<?php esc_html_e('Merchant Login'); ?>
 			</a>
 		</li>

@@ -103,12 +103,12 @@
 }
 
 /* STATUS */
-.fast-status {
+.ourpass-status {
 	padding-bottom: 40px;
 }
-.fast-status .dashicons-dismiss:before {
+.ourpass-status .dashicons-dismiss:before {
 	color: #d63638;
 }
-.fast-status .dashicons-yes-alt:before {
+.ourpass-status .dashicons-yes-alt:before {
 	color: #00a32a;
 }

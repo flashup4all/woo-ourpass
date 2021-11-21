@@ -30,31 +30,18 @@ require_once OURPASSWC_PATH . 'includes/version.php';
 
 // Check whether the woocommerce plugin is active.
 if ( ourpasswc_woocommerce_is_active() ) {
-	// Fast debug functions.
+	// OurPass debug functions.
 	require_once OURPASSWC_PATH . 'includes/debug.php';
 	// WP Admin plugin settings.
 	require_once OURPASSWC_PATH . 'includes/admin/settings.php';
-	// Loads Fast js and css assets.
+	// Loads OurPass js and css assets.
 	require_once OURPASSWC_PATH . 'includes/assets.php';
-	// Loads fast utilities.
+	// Loads OurPass utilities.
 	require_once OURPASSWC_PATH . 'includes/utilities.php';
-	// Adds Fast Checkout button to store.
+	// Adds OurPass Checkout button to store.
 	require_once OURPASSWC_PATH . 'includes/checkout.php';
 	// Registers routes for the plugin API endpoints.
 	require_once OURPASSWC_PATH . 'includes/routes.php';
-    
-	// // Add Fast button shortcodes.
-	// require_once OURPASSWC_PATH . 'includes/shortcodes.php';
-	// // Add Fast button widgets.
-	// require_once OURPASSWC_PATH . 'includes/widgets.php';
-	// // Add Fast button blocks.
-	// require_once OURPASSWC_PATH . 'includes/blocks.php';
-	// // Add Fast failed/disabled webhook handler.
-	// require_once OURPASSWC_PATH . 'includes/webhooks.php';
-	// // Add tools to support third-party plugins.
-	// require_once OURPASSWC_PATH . 'includes/third-party.php';
-	// // Add Freemius integration.
-	// require_once OURPASSWC_PATH . 'includes/class-freemius.php';
 }
 
 define('OURPASSWC_PLUGIN_ACTIVATED', 'ourpasswc_plugin_activated');

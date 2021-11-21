@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Fast Plugin Settings
+ * OurPass Plugin Settings
  *
  * Adds config UI for wp-admin.
  *
- * @package Fast
+ * @package OurPass
  */
 
 // Load admin notices.
@@ -34,17 +34,15 @@ function ourpasswc_updated_option($option, $old_value, $value)
         OURPASSWC_SETTING_TEST_SECRET_KEY,
         OURPASSWC_SETTING_LIVE_PUBLIC_KEY,
         OURPASSWC_SETTING_LIVE_SECRET_KEY,
+        //=====
+        OURPASSWC_SETTING_PDP_BUTTON_HOOK,
+        OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS,
+        OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE,
         //====
         OURPASSWC_SETTING_PDP_BUTTON_STYLES,
         OURPASSWC_SETTING_CART_BUTTON_STYLES,
         OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES,
         OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES,
-        //=====
-        OURPASSWC_SETTING_ONBOARDING_URL,
-        OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS,
-        OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE,
-        OURPASSWC_SETTING_PDP_BUTTON_HOOK,
-        OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER,
     );
 
     if (in_array($option, $stampable_options, true)) {
@@ -63,7 +61,7 @@ add_action('admin_init', 'ourpasswc_admin_setup_sections');
 add_action('admin_init', 'ourpasswc_admin_setup_fields');
 
 /**
- * Add plugin action links to the Fast plugin on the plugins page.
+ * Add plugin action links to the OurPass plugin on the plugins page.
  *
  * @param array  $plugin_meta The list of links for the plugin.
  * @param string $plugin_file Path to the plugin file relative to the plugins directory.
@@ -87,11 +85,11 @@ function ourpasswc_admin_plugin_row_meta($plugin_meta, $plugin_file, $plugin_dat
         $secretKey = ourpasswc_get_secret_key();
 
         if (empty($publicKey) && empty($secretKey)) {
-            $ourpasswc_setting_fast_onboarding_url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_ONBOARDING_URL, OURPASSWC_ONBOARDING_URL);
+            $ourpasswc_setting_ourpass_onboarding_url = OURPASSWC_ONBOARDING_URL;
 
             $plugin_meta[] = sprintf(
                 '<a href="%1$s" target="_blank" rel="noopener"><strong>%2$s</strong></a>',
-                esc_url($ourpasswc_setting_fast_onboarding_url),
+                esc_url($ourpasswc_setting_ourpass_onboarding_url),
                 esc_html__('Become a Merchant!')
             );
         }
@@ -108,7 +106,7 @@ function ourpasswc_admin_plugin_row_meta($plugin_meta, $plugin_file, $plugin_dat
 add_action('plugin_row_meta', 'ourpasswc_admin_plugin_row_meta', 10, 4);
 
 /**
- * Registers the Fast menu within wp-admin.
+ * Registers the OurPass menu within wp-admin.
  */
 function ourpasswc_admin_create_menu()
 {
@@ -118,14 +116,14 @@ function ourpasswc_admin_create_menu()
     $capability = 'manage_options';
     $slug       = 'ourpass';
     $callback   = 'ourpasswc_settings_page_content';
-    $icon       = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY3IiBoZWlnaHQ9IjE2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI4My41IiBjeT0iODMuNSIgcj0iODMuNSIgZmlsbD0iI2ZmZiIvPjxwYXRoIG9wYWNpdHk9Ii41IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTU1LjM1MiA4OS4xNCAzMy45MS0zMy44OHYzMy44OGgtMzMuOTFaIiBmaWxsPSIjYTdhYWFkIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Im02My44MzIgMTIzLjA1NCA1Ni41MDgtNTYuNTA4djU2LjUwOEg2My44MzJaTTQ2Ljg3OSA2Ni41NDVsMjIuNTk3LTIyLjU5N3YyMi41OTdINDYuODc5WiIgZmlsbD0iI2E3YWFhZCIvPjwvc3ZnPg==';
-    $position   = 100;
+    $icon       = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY3IiBoZWlnaHQ9IjE2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI4My41IiBjeT0iODMuNSIgcj0iODMuNSIgZmlsbD0iI2E3YWFhZCIvPjxwYXRoIG9wYWNpdHk9Ii41IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTU1LjM1MiA4OS4xNCAzMy45MS0zMy44OHYzMy44OGgtMzMuOTFaIiBmaWxsPSIjZmZmIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Im02My44MzIgMTIzLjA1NCA1Ni41MDgtNTYuNTA4djU2LjUwOEg2My44MzJaTTQ2Ljg3OSA2Ni41NDVsMjIuNTk3LTIyLjU5N3YyMi41OTdINDYuODc5WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==';
+    $position   = 101;
 
     add_menu_page($page_title, $menu_title, $capability, $slug, $callback, $icon, $position);
 }
 
 /**
- * Maybe redirect to the Fast settings page after activation.
+ * Maybe redirect to the OurPass settings page after activation.
  */
 function ourpasswc_maybe_redirect_after_activation()
 {
@@ -135,7 +133,7 @@ function ourpasswc_maybe_redirect_after_activation()
         // Delete the flag to prevent an endless redirect loop.
         delete_option(OURPASSWC_PLUGIN_ACTIVATED);
 
-        // Redirect to the Fast settings page.
+        // Redirect to the OurPass settings page.
         wp_safe_redirect(
             esc_url(
                 admin_url('admin.php?page=ourpass')
@@ -146,25 +144,14 @@ function ourpasswc_maybe_redirect_after_activation()
 }
 
 /**
- * Check if the plugin should show the Fast advanced settings.
- * TODO - REMOVE
- * 
- * @return bool
- */
-function ourpasswc_should_show_advanced_settings()
-{
-    return preg_match('/@fast.co$/i', wp_get_current_user()->user_email);
-}
-
-/**
- * Get the list of tabs for the Fast settings page.
+ * Get the list of tabs for the OurPass settings page.
  *
  * @return array
  */
 function ourpasswc_get_settings_tabs()
 {
     /**
-     * Filter the list of settins tabs.
+     * Filter the list of settings tabs.
      *
      * @param array $settings_tabs The settings tabs.
      *
@@ -181,7 +168,7 @@ function ourpasswc_get_settings_tabs()
 }
 
 /**
- * Get the active tab in the Fast settings page.
+ * Get the active tab in the OurPass settings page.
  *
  * @return string
  */
@@ -191,7 +178,7 @@ function ourpasswc_get_active_tab()
 }
 
 /**
- * Renders content of Fast settings page.
+ * Renders content of OurPass settings page.
  */
 function ourpasswc_settings_page_content()
 {
@@ -199,7 +186,7 @@ function ourpasswc_settings_page_content()
 }
 
 /**
- * Sets up sections for Fast settings page.
+ * Sets up sections for OurPass settings page.
  */
 function ourpasswc_admin_setup_sections()
 {
@@ -222,7 +209,6 @@ function ourpasswc_admin_setup_sections()
     $section_name = 'ourpass_styles';
     add_settings_section($section_name, '', false, $section_name);
     register_setting($section_name, OURPASSWC_SETTING_LOAD_BUTTON_STYLES);
-    register_setting($section_name, OURPASSWC_SETTING_USE_DARK_MODE);
     register_setting($section_name, OURPASSWC_SETTING_PDP_BUTTON_STYLES);
     register_setting($section_name, OURPASSWC_SETTING_CART_BUTTON_STYLES);
     register_setting($section_name, OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES);
@@ -230,7 +216,7 @@ function ourpasswc_admin_setup_sections()
 }
 
 /**
- * Sets up fields for Fast settings page.
+ * Sets up fields for OurPass settings page.
  */
 function ourpasswc_admin_setup_fields()
 {
@@ -252,7 +238,6 @@ function ourpasswc_admin_setup_fields()
     // Button style settings.
     $settings_section = 'ourpass_styles';
     add_settings_field(OURPASSWC_SETTING_LOAD_BUTTON_STYLES, __('Load Button Styles'), 'ourpasswc_load_button_styles', $settings_section, $settings_section);
-    add_settings_field(OURPASSWC_SETTING_USE_DARK_MODE, __('Enable Dark Mode'), 'ourpasswc_setting_use_dark_mode', $settings_section, $settings_section);
     add_settings_field(OURPASSWC_SETTING_PDP_BUTTON_STYLES, __('Product page button styles'), 'ourpasswc_pdp_button_styles_content', $settings_section, $settings_section);
     add_settings_field(OURPASSWC_SETTING_CART_BUTTON_STYLES, __('Cart page button styles'), 'ourpasswc_cart_button_styles_content', $settings_section, $settings_section);
     add_settings_field(OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES, __('Mini cart widget button styles'), 'ourpasswc_mini_cart_button_styles_content', $settings_section, $settings_section);
@@ -280,7 +265,7 @@ function ourpasswc_test_mode_content()
             'name'        => OURPASSWC_SETTING_TEST_MODE,
             'current'     => $ourpasswc_test_mode,
             'label'       => __('Enable test mode'),
-            'description' => __('When test mode is enabled, only logged-in admin users will see the Fast Checkout button.'),
+            'description' => __('When test mode is enabled, only logged-in admin users will see the OurPass Checkout button.'),
         )
     );
 }
@@ -304,7 +289,7 @@ function ourpasswc_debug_mode_content()
             'name'        => OURPASSWC_SETTING_DEBUG_MODE,
             'current'     => $ourpasswc_debug_mode,
             'label'       => __('Enable debug mode'),
-            'description' => __('When debug mode is enabled, the Fast plugin will maintain an error log.'),
+            'description' => __('When debug mode is enabled, the OurPass plugin will maintain an error log.'),
         )
     );
 }
@@ -424,7 +409,7 @@ function ourpasswc_hide_button_products()
             'name'        => OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS,
             'selected'    => $selected,
             'class'       => 'ourpass-select ourpass-select--hide-button-products',
-            'description' => __('Select products for which the Fast checkout button should be hidden'),
+            'description' => __('Select products for which the OurPass checkout button should be hidden'),
             'nonce'       => 'search-products',
         )
     );
@@ -477,24 +462,7 @@ function ourpasswc_load_button_styles()
             'name'        => OURPASSWC_SETTING_LOAD_BUTTON_STYLES,
             'current'     => $ourpasswc_load_button_styles,
             'label'       => __('Load the button styles as configured in the settings.'),
-            'description' => __('When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the Fast buttons.'),
-        )
-    );
-}
-
-/**
- * Renders a checkbox to set whether or not to enable dark mode.
- */
-function ourpasswc_setting_use_dark_mode()
-{
-    $ourpasswc_use_dark_mode = get_option(OURPASSWC_SETTING_USE_DARK_MODE, 0);
-
-    ourpasswc_settings_field_checkbox(
-        array(
-            'name'        => OURPASSWC_SETTING_USE_DARK_MODE,
-            'current'     => $ourpasswc_use_dark_mode,
-            'label'       => __('Enable Dark Mode for the Fast Buttons.'),
-            'description' => __('When this box is checked, the Fast buttons will be rendered in dark mode.'),
+            'description' => __('When this box is checked, the styles configured below will be loaded to provide additional styling to the loading of the OurPass buttons.'),
         )
     );
 }
@@ -561,7 +529,7 @@ function ourpasswc_checkout_button_styles_content()
 
 
 /**
- * Get the Fast APP ID.
+ * Get the OurPass Test Mode.
  *
  * @return bool
  */
@@ -578,7 +546,7 @@ function ourpasswc_get_is_test_mode()
 }
 
 /**
- * Get the Fast APP ID.
+ * Get the OurPass Public Key.
  *
  * @return string
  */
@@ -591,7 +559,7 @@ function ourpasswc_get_public_key()
 }
 
 /**
- * Get the Fast APP ID.
+ * Get the OurPass Secret Key.
  *
  * @return string
  */
@@ -661,140 +629,3 @@ function ourpasswc_ajax_search_pages()
     wp_send_json($return);
 }
 add_action('wp_ajax_ourpasswc_search_pages', 'ourpasswc_ajax_search_pages');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Renders the Disable Multicurrency field.
- */
-function ourpasswc_disable_multicurrency_content()
-{
-    $ourpasswc_disable_multicurrency = get_option(OURPASSWC_SETTING_DISABLE_MULTICURRENCY, 0);
-
-    ourpasswc_settings_field_checkbox(
-        array(
-            'name'        => OURPASSWC_SETTING_DISABLE_MULTICURRENCY,
-            'current'     => $ourpasswc_disable_multicurrency,
-            'label'       => __('Disable Multicurrency Support'),
-            'description' => __('Disable multicurrency support in Fast Checkout.'),
-        )
-    );
-}
-
-/**
- * Renders the PDP Button Hook alternate field.
- */
-function ourpasswc_pdp_button_hook_other()
-{
-    $ourpasswc_setting_pdp_button_hook_other = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER, '');
-
-    ourpasswc_settings_field_input(
-        array(
-            'name'        => OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER,
-            'description' => __('Enter an alternative location for displaying the Fast Product Checkout button. For advanced users only.'),
-            'value'       => $ourpasswc_setting_pdp_button_hook_other,
-        )
-    );
-}
-
-/**
- * Renders the onboarding URL field.
- */
-function ourpasswc_onboarding_url_content()
-{
-    $url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_ONBOARDING_URL, OURPASSWC_ONBOARDING_URL);
-
-    ourpasswc_settings_field_input(
-        array(
-            'name'  => OURPASSWC_SETTING_ONBOARDING_URL,
-            'value' => $url,
-        )
-    );
-}
-
-
-
-
-
-
-
-
-/**
- * Renders the show login in footer field.
- */
-function ourpasswc_show_login_button_footer()
-{
-    $ourpasswc_show_login_button_footer = get_option(OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET);
-
-    if (OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET === $ourpasswc_show_login_button_footer) {
-        // If the option is OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET, then it hasn't yet been set. In this case, we
-        // want to configure it to true.
-        $ourpasswc_show_login_button_footer = '1';
-        update_option(OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER, $ourpasswc_show_login_button_footer);
-    }
-
-    ourpasswc_settings_field_checkbox(
-        array(
-            'name'        => OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER,
-            'current'     => $ourpasswc_show_login_button_footer,
-            'label'       => __('Display Fast Login Button in Footer'),
-            'description' => __('The Fast Login button displays in the footer by default for non-logged in users. Uncheck this option to prevent the Fast Login button from displaying in the footer.'),
-        )
-    );
-}
-
-/**
- * Renders the fast.js URL field.
- */
-function ourpasswc_ourpasswc_js_content()
-{
-    $ourpasswc_setting_fast_js_url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_FAST_JS_URL, OURPASSWC_JS_URL);
-
-    ourpasswc_settings_field_input(
-        array(
-            'name'  => 'fast_fast_js_url',
-            'value' => $ourpasswc_setting_fast_js_url,
-        )
-    );
-}
-
-/**
- * Renders the Fast JWKS URL field.
- */
-function ourpasswc_ourpasswc_jwks_content()
-{
-    $ourpasswc_setting_fast_jwks_url = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_FAST_JWKS_URL, OURPASSWC_JWKS_URL);
-
-    ourpasswc_settings_field_input(
-        array(
-            'name'  => 'fast_fast_jwks_url',
-            'value' => $ourpasswc_setting_fast_jwks_url,
-        )
-    );
-}
-
-
-
-
-
-
-
-
-

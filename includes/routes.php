@@ -1,8 +1,8 @@
 <?php
 /**
- * Register routes for the Fast Woocommerce plugin API.
+ * Register routes for the OurPass Woocommerce plugin API.
  *
- * @package Fast
+ * @package OurPass
  */
 
 // Define the API route base path.
@@ -17,7 +17,7 @@ require_once OURPASSWC_PATH . 'includes/routes/class-order-post.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-order-get.php';
 
 /**
- * Register Fast Woocommerce routes for the REST API.
+ * Register OurPass Woocommerce routes for the REST API.
  */
 function ourpasswc_rest_api_init() {
 

@@ -1,17 +1,17 @@
 <?php
 /**
- * Fast Checkout
+ * OurPass Checkout
  *
- * Adds Fast Checkout button to store.
+ * Adds OurPass Checkout button to store.
  *
- * @package Fast
+ * @package OurPass
  */
 
-// Load helpers to check if/when to hide the Fast Checkout buttons.
+// Load helpers to check if/when to hide the OurPass Checkout buttons.
 require_once OURPASSWC_PATH . 'includes/hide.php';
 
 /**
- * Returns cart item data that Fast Checkout button can interpret.
+ * Returns cart item data that OurPass Checkout button can interpret.
  * This function also populates some global variables about cart state, such as whether it contains products we don't support.
  */
 function ourpasswc_get_cart_data() {
@@ -20,7 +20,7 @@ function ourpasswc_get_cart_data() {
 	if ( ! empty( WC()->cart ) ) {
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 			// Populate info about this cart item.
-			// Fast backend expects strings for product/variant/quantity so we use strval() here.
+			// OurPass backend expects strings for product/variant/quantity so we use strval() here.
 			$ourpasswc_cart_item_data = array(
 				'product_id' => strval( $cart_item['product_id'] ),
 				'quantity'   => strval( intval( $cart_item['quantity'] ) ), // quantity is a float in wc, casting to int first to be safer.
@@ -48,7 +48,7 @@ function ourpasswc_get_cart_data() {
 }
 
 /**
- * Maybe render the Fast Checkout button.
+ * Maybe render the OurPass Checkout button.
  *
  * @param string $button_type The type of button to maybe render.
  * @param string $template    The template to use.
@@ -81,7 +81,7 @@ function ourpasswc_maybe_render_pdp_button() {
 }
 
 /**
- * Inject Fast Checkout button at the selected hook.
+ * Inject OurPass Checkout button at the selected hook.
  */
 function ourpasswc_pdp_button_hook_init() {
 	$ourpasswc_pdp_button_hook = ourpasswc_get_pdp_button_hook();
@@ -91,7 +91,7 @@ function ourpasswc_pdp_button_hook_init() {
 add_action( 'init', 'ourpasswc_pdp_button_hook_init' );
 
 /**
- * Inject Fast Checkout button after Proceed to Checkout button on cart page.
+ * Inject OurPass Checkout button after Proceed to Checkout button on cart page.
  */
 function ourpasswc_woocommerce_proceed_to_checkout() {
 	ourpasswc_maybe_render_checkout_button( 'cart', 'ourpass-cart' );
@@ -99,7 +99,7 @@ function ourpasswc_woocommerce_proceed_to_checkout() {
 add_action( 'woocommerce_proceed_to_checkout', 'ourpasswc_woocommerce_proceed_to_checkout', 9 );
 
 /**
- * Inject the Fast Checkout button on the mini-cart widget.
+ * Inject the OurPass Checkout button on the mini-cart widget.
  */
 function ourpasswc_woocommerce_widget_shopping_cart_before_buttons() {
 	ourpasswc_maybe_render_checkout_button( 'cart', 'ourpass-mini-cart' );
@@ -107,7 +107,7 @@ function ourpasswc_woocommerce_widget_shopping_cart_before_buttons() {
 add_action( 'woocommerce_widget_shopping_cart_before_buttons', 'ourpasswc_woocommerce_widget_shopping_cart_before_buttons', 30 );
 
 /**
- * Inject the Fast Checkout button on the checkout page.
+ * Inject the OurPass Checkout button on the checkout page.
  */
 function ourpasswc_woocommerce_before_checkout_form() {
 	ourpasswc_maybe_render_checkout_button( 'cart', 'ourpass-checkout' );
@@ -157,7 +157,7 @@ function ourpasswc_woocommerce_rest_pre_insert_shop_order_object( $order, $reque
 add_filter( 'woocommerce_rest_pre_insert_shop_order_object', 'ourpasswc_woocommerce_rest_pre_insert_shop_order_object', 10, 3 );
 
 /**
- * Fast transition trash to on-hold.
+ * OurPass transition trash to on-hold.
  *
  * @param int      $order_id The order ID.
  * @param WC_Order $order    The order object.
@@ -173,8 +173,8 @@ function ourpasswc_order_status_trash_to_on_hold( $order_id, $order ) {
 			$data = $data_item->get_data();
 			$key  = ! empty( $data['key'] ) ? $data['key'] : '';
 
-			if ( 'fast_order_id' === $key ) {
-				$status_change_note = __( 'Fast: Order status changed from pending to on-hold.', 'fast' );
+			if ('ourpass_order_id' === $key ) {
+				$status_change_note = __( 'OurPass: Order status changed from pending to on-hold.');
 				$order->add_order_note( $status_change_note );
 
 				ourpasswc_log_info( 'Added status change note: ' . $status_change_note );

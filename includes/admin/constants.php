@@ -1,8 +1,9 @@
 <?php
+
 /**
- * Fast Plugin Settings Constants
+ * OurPass Plugin Settings Constants
  *
- * @package Fast
+ * @package OurPass
  */
 
 define('OURPASSWC_ENVIRONMENT', 'sandbox');
@@ -21,37 +22,16 @@ define('OURPASSWC_SETTING_PDP_BUTTON_HOOK', 'ourpass_pdp_button_hook');
 define('OURPASSWC_DEFAULT_PDP_BUTTON_HOOK', 'woocommerce_after_add_to_cart_quantity');
 define('OURPASSWC_SETTING_HIDE_BUTTON_PRODUCTS', 'ourpass_hide_button_products');
 define('OURPASSWC_SETTING_CHECKOUT_REDIRECT_PAGE', 'ourpasswc_checkout_redirect_page');
+// STYLES
+define('OURPASSWC_SETTING_LOAD_BUTTON_STYLES', 'ourpasswc_load_button_styles');
+define('OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'ourpass load button styles not set');
+define('OURPASSWC_SETTING_PDP_BUTTON_STYLES', 'ourpass_pdp_button_styles');
+define('OURPASSWC_SETTING_CART_BUTTON_STYLES', 'ourpass_cart_button_styles');
+define('OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES', 'ourpass_mini_cart_button_styles');
+define('OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES', 'ourpass_checkout_button_styles');
 // OTHER SETTINGS
-define('OURPASSWC_SETTING_ONBOARDING_URL', 'ourpasswc_onboarding_url');
 define('OURPASSWC_ONBOARDING_URL', 'https://merchant.ourpass.co');
 define('OURPASSWC_SUPPORTED_CURRENCY', 'NGN');
-
-
-define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES', 'ourpasswc_load_button_styles' );
-define( 'OURPASSWC_SETTING_LOAD_BUTTON_STYLES_NOT_SET', 'ourpass load button styles not set' );
-define( 'OURPASSWC_SETTING_PDP_BUTTON_STYLES', 'ourpass_pdp_button_styles' );
-define( 'OURPASSWC_SETTING_CART_BUTTON_STYLES', 'ourpass_cart_button_styles' );
-define( 'OURPASSWC_SETTING_MINI_CART_BUTTON_STYLES', 'ourpass_mini_cart_button_styles' );
-define( 'OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES', 'ourpass_checkout_button_styles' );
-
-define('OURPASSWC_SETTING_USE_DARK_MODE', 'ourpasswc_use_dark_mode');
-define('OURPASSWC_SETTING_DISABLE_MULTICURRENCY', 'ourpasswc_disable_multicurrency');
-define( 'OURPASSWC_SETTING_PDP_BUTTON_HOOK_OTHER', 'ourpass_pdp_button_hook_other' );
-define( 'OURPASSWC_SETTING_PLUGIN_DO_INIT_FORMAT', 'ourpasswc_do_init_%s' );
-
-
-
-define('OURPASSWC_SETTING_SHOW_LOGIN_BUTTON_FOOTER', 'ourpasswc_show_login_button_footer');
-define('OURPASSWC_SETTING_LOGIN_FOOTER_NOT_SET', 'ourpass login in footer not set');
-
-
-
-define('OURPASSWC_SETTING_FAST_JS_URL', 'fast_fast_js_url');
-define( 'OURPASSWC_JS_URL', 'https://js.fast.co/fast-woocommerce.js' );
-
-define('OURPASSWC_SETTING_FAST_JWKS_URL', 'fast_fast_jwks_url');
-define( 'OURPASSWC_JWKS_URL', 'https://api.fast.co/v1/oauth2/jwks' );
-
 
 define(
 	'OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',

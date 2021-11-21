@@ -2,7 +2,7 @@
 /**
  * Template for rendering individual tabs.
  *
- * @package Fast
+ * @package OurPass
  */
 
 $tab_name = ! empty( $args['tab'] ) ? $args['tab'] : '';
