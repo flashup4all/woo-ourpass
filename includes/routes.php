@@ -12,59 +12,21 @@ define( 'OURPASSWC_ROUTES_BASE', 'wc/ourpass/v1' );
 require_once OURPASSWC_PATH . 'includes/routes/class-route.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-cart.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-product.php';
-
-// Provides an API for polling shipping options.
-require_once OURPASSWC_PATH . 'includes/routes/class-shipping.php';
-// Provides an API that exposes shipping zones.
-require_once OURPASSWC_PATH . 'includes/routes/class-shipping-zones.php';
-// Provides an API that exposes plugin info.
-require_once OURPASSWC_PATH . 'includes/routes/class-plugin-info.php';
 // Provides an API to add, edit, and fetch orders.
 require_once OURPASSWC_PATH . 'includes/routes/class-order-post.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-order-get.php';
-// Provides an API that exposes product attributes.
-require_once OURPASSWC_PATH . 'includes/routes/class-product-attributes.php';
-// Provides an API that exposes orders with refunds.
-require_once OURPASSWC_PATH . 'includes/routes/class-refunds.php';
-// Provides an API that exposes a list of disabled Fast webhooks.
-require_once OURPASSWC_PATH . 'includes/routes/class-webhooks.php';
-// Provides an API that exposes a test authorization header.
-require_once OURPASSWC_PATH . 'includes/routes/class-auth-test.php';
 
 /**
  * Register Fast Woocommerce routes for the REST API.
  */
 function ourpasswc_rest_api_init() {
-	// Register a utility route to get information on installed plugins.
-	new OurPass_Routes_Plugin_Info();
 
 	new OurPass_Routes_OurPass_Data_From_Cart();
 	new OurPass_Routes_OurPass_Data_From_Product();
-
-	// Register a route to collect all possible shipping locations.
-	new OurPass_Routes_Shipping_Zones();
-
-	// Register a route to calculate available shipping rates.
-	// FE -> OMS -> Blender -> (pID, variantID, Shipping info, CustomerID)Plugin.
-	new OurPass_Routes_Shipping();
-
 	// Register a route to add/edit an order.
 	new OurPass_Routes_Order_Post();
-
 	// Register a route to fetch an order.
 	new OurPass_Routes_Order_Get();
-
-	// Register a route to load product attributes.
-	new OurPass_Routes_Product_Attributes();
-
-	// Register a route to get all orders with refunds.
-	new OurPass_Routes_Refunds();
-
-	// Register a route to get all disabled Fast webhooks.
-	new OurPass_Routes_Webhooks();
-
-	// Register a route to test the Authorization header.
-	new OurPass_Routes_Auth_Test();
 }
 add_action( 'rest_api_init', 'ourpasswc_rest_api_init' );
 
