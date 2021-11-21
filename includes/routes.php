@@ -12,9 +12,7 @@ define( 'OURPASSWC_ROUTES_BASE', 'wc/ourpass/v1' );
 require_once OURPASSWC_PATH . 'includes/routes/class-route.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-cart.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-product.php';
-// Provides an API to add, edit, and fetch orders.
-require_once OURPASSWC_PATH . 'includes/routes/class-order-post.php';
-require_once OURPASSWC_PATH . 'includes/routes/class-order-get.php';
+require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-response-create-order.php';
 
 /**
  * Register OurPass Woocommerce routes for the REST API.
@@ -23,10 +21,7 @@ function ourpasswc_rest_api_init() {
 
 	new OurPass_Routes_OurPass_Data_From_Cart();
 	new OurPass_Routes_OurPass_Data_From_Product();
-	// Register a route to add/edit an order.
-	new OurPass_Routes_Order_Post();
-	// Register a route to fetch an order.
-	new OurPass_Routes_Order_Get();
+	new OurPass_Routes_OurPass_Response_Create_Order();
 }
 add_action( 'rest_api_init', 'ourpasswc_rest_api_init' );
 

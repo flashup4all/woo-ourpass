@@ -6,7 +6,7 @@
  * @package OurPass
  */
 
-define('OURPASSWC_ENVIRONMENT', 'sandbox');
+define('OURPASSWC_ENVIRONMENT', 'sandbox'); // production | sandbox
 define('OURPASSWC_SETTINGS_TIMESTAMPS', 'ourpasswc_settings_timestamps');
 // APP INFO SETTINGS
 define( 'OURPASSWC_SETTING_DEBUG_MODE', 'ourpasswc_debug_mode' );
@@ -32,6 +32,8 @@ define('OURPASSWC_SETTING_CHECKOUT_BUTTON_STYLES', 'ourpass_checkout_button_styl
 // OTHER SETTINGS
 define('OURPASSWC_ONBOARDING_URL', 'https://merchant.ourpass.co');
 define('OURPASSWC_SUPPORTED_CURRENCY', 'NGN');
+define('OURPASSWC_PRODUCTION_BASE_URL', 'https://beta-api.ourpass.co');
+define('OURPASSWC_SANDBOX_BASE_URL', 'https://user-api-staging.ourpass.co');
 
 define(
 	'OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',
