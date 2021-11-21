@@ -74,7 +74,7 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
 
             $ourpass_data['env'] = OURPASSWC_ENVIRONMENT;
             $ourpass_data['api_key'] = ourpasswc_get_secret_key();
-            $ourpass_data['reference'] = 'WC_CHECKOUT_'.time();
+            $ourpass_data['reference'] = 'WC_CHECKOUT_' . md5(uniqid(bin2hex(random_bytes(20)), true));
             $ourpass_data['amount'] = $productData['amount'] * $productData['qty'];
             $ourpass_data['discount'] = '';
             $ourpass_data['qty'] = 1;
