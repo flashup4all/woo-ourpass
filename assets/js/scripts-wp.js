@@ -28,8 +28,8 @@ template.innerHTML = `
             transition-duration: 0.4s;
             cursor: pointer;
             opacity: 1;
-            font-weight: 700;
-            font-size: 18px;
+            font-weight: 500;
+            font-size: 15px;
         }
         :host #icon{
             margin-right: 10px;
@@ -180,7 +180,7 @@ productTemplate.innerHTML = `
             padding: 24px;
             font-size: 16px;
             color: #000000;
-            font-weight: 700;
+            font-weight: 500;
             white-space: nowrap;
             z-index: 9999;
         }
@@ -215,8 +215,8 @@ productTemplate.innerHTML = `
             transition-duration: 0.4s;
             cursor: pointer;
             opacity: 1;
-            font-weight: 700;
-            font-size: 18px;
+            font-weight: 500;
+            font-size: 15px;
         }
         :host #icon{
             margin-right: 10px;
