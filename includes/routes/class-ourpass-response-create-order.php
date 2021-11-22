@@ -39,6 +39,12 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
         try {
             $this->request = $request;
 
+            $_REQUEST['_wpnonce'] = (isset($_SERVER['HTTP_X_WP_NONCE'])) ? $_SERVER['HTTP_X_WP_NONCE'] : '';
+
+            if (!check_ajax_referer('wp_rest', '', false)) {
+                throw new \Exception('Invalid Request');
+            }
+
             $reference = $this->request->get_param('reference');
 
             if(empty($reference)) {

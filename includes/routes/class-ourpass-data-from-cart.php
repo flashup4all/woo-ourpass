@@ -34,9 +34,13 @@ class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
         try {
             $this->request = $request;
 
-            $cart = WC()->cart;
+            $_REQUEST['_wpnonce'] = (isset($_SERVER['HTTP_X_WP_NONCE'])) ? $_SERVER['HTTP_X_WP_NONCE'] : '';
 
-            md5(uniqid(rand(), true));
+            if (!check_ajax_referer('wp_rest', '', false)) {
+                throw new \Exception('Invalid Request');
+            }
+
+            $cart = WC()->cart;
 
             if (empty($cart)) {
                 throw new \Exception('Cart is empty');

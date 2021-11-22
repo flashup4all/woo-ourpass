@@ -116,7 +116,7 @@ function ourpasswc_admin_create_menu()
     $capability = 'manage_options';
     $slug       = 'ourpass';
     $callback   = 'ourpasswc_settings_page_content';
-    $icon       = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY3IiBoZWlnaHQ9IjE2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI4My41IiBjeT0iODMuNSIgcj0iODMuNSIgZmlsbD0iI2E3YWFhZCIvPjxwYXRoIG9wYWNpdHk9Ii41IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTU1LjM1MiA4OS4xNCAzMy45MS0zMy44OHYzMy44OGgtMzMuOTFaIiBmaWxsPSIjZmZmIi8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Im02My44MzIgMTIzLjA1NCA1Ni41MDgtNTYuNTA4djU2LjUwOEg2My44MzJaTTQ2Ljg3OSA2Ni41NDVsMjIuNTk3LTIyLjU5N3YyMi41OTdINDYuODc5WiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==';
+    $icon       = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTY3IiBoZWlnaHQ9IjE2NyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBvcGFjaXR5PSIuNSIgZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Im01NS4zNTIgODkuMTQgMzMuOTEtMzMuODh2MzMuODhoLTMzLjkxWiIgZmlsbD0iI2ZmZiIvPgogIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJtNjMuODMyIDEyMy4wNTQgNTYuNTA4LTU2LjUwOHY1Ni41MDhINjMuODMyWk00Ni44NzkgNjYuNTQ1bDIyLjU5Ny0yMi41OTd2MjIuNTk3SDQ2Ljg3OVoiIGZpbGw9IiNmZmYiLz4KPC9zdmc+Cg==';
     $position   = 101;
 
     add_menu_page($page_title, $menu_title, $capability, $slug, $callback, $icon, $position);

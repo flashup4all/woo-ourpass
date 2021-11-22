@@ -32,6 +32,12 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
         try {
             $this->request = $request;
 
+            $_REQUEST['_wpnonce']= (isset($_SERVER['HTTP_X_WP_NONCE'])) ? $_SERVER['HTTP_X_WP_NONCE'] : '';
+
+            if (!check_ajax_referer('wp_rest', '', false)) {
+                throw new \Exception('Invalid Request');
+            }
+
             $product_id = $this->request->get_param('productId');
             $variant_id = $this->request->get_param('variantId');
             $quantity = $this->request->get_param('quantity');

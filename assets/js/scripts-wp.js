@@ -56,7 +56,6 @@ class OurPassCartCheckoutButton extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-
     }
 
     connectedCallback() {
@@ -94,6 +93,9 @@ class OurPassCartCheckoutButton extends HTMLElement {
         jQuery.ajax({
             method: "GET",
             url: "/wp-json/wc/ourpass/v1/cart/data",
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader('X-WP-Nonce', this.getAttribute('wp_nonce'))
+            }
         }).success((response) => {
             OurpassCheckout.openIframe({
                 env: response.data.env,
@@ -113,6 +115,9 @@ class OurPassCartCheckoutButton extends HTMLElement {
                         url: "/wp-json/wc/ourpass/v1/order",
                         data: {
                             reference: response.data.reference,
+                        },
+                        beforeSend: (xhr) => {
+                            xhr.setRequestHeader('X-WP-Nonce', this.getAttribute('wp_nonce'))
                         }
                     }).success((data) => {
                         if (data.success) {
@@ -360,6 +365,9 @@ class OurPassProductCheckoutButton extends HTMLElement {
                 variationId: data.params.variation_id,
                 quantity: data.params.quantity,
                 atttributesValues: data.params.option_values
+            },
+            beforeSend: (xhr) => {
+                xhr.setRequestHeader('X-WP-Nonce', this.getAttribute('wp_nonce'))
             }
         }).success((response) => {
             OurpassCheckout.openIframe({
@@ -381,6 +389,9 @@ class OurPassProductCheckoutButton extends HTMLElement {
                         url: "/wp-json/wc/ourpass/v1/order",
                         data: {
                             reference: response.data.reference,
+                        },
+                        beforeSend: (xhr) => {
+                            xhr.setRequestHeader('X-WP-Nonce', this.getAttribute('wp_nonce'))
                         }
                     }).success((data) => {
                         if (data.success) {

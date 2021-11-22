@@ -1,1 +1,1 @@
-<ourpass-cart-checkout-button></ourpass-cart-checkout-button>
+<ourpass-cart-checkout-button wp_nonce="<?php echo wp_create_nonce('wp_rest'); ?>"></ourpass-cart-checkout-button>
