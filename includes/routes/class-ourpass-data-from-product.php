@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') || exit;
+
 /**
  * OurPass WooCommerce product attributes route object.
  */
@@ -57,6 +59,8 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
             $productData['src'] = wp_get_attachment_image_url($product->get_image_id(), 'full');
             $productData['url'] = preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id)));
             $productData['metadata']['product_id'] = $product->get_id();
+            $productData['metadata']['variation_id'] = null;
+            $productData['metadata']['variation'] = null;
 
             if($product->is_type( 'variable' ) && !empty( $variant_id )) {
 
@@ -76,7 +80,6 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
             $ourpass_data['api_key'] = ourpasswc_get_secret_key();
             $ourpass_data['reference'] = 'WC_CHECKOUT_' . md5(uniqid(bin2hex(random_bytes(20)), true));
             $ourpass_data['amount'] = $productData['amount'] * $productData['qty'];
-            $ourpass_data['discount'] = '';
             $ourpass_data['qty'] = 1;
             $ourpass_data['name'] = $productData['name'];
             $ourpass_data['description'] = $productData['description'];

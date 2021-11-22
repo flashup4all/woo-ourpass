@@ -1,0 +1,61 @@
+{
+    "status": true,
+    "message": "Checkout successful",
+    "data": {
+        "amount": 1500,
+        "currency": "NGN",
+        "transaction_date": "2016-10-01T11:03:09.000Z",
+        "status": "success",
+        "reference": "DG4uishudoq90LD",
+        "domain": "test",
+        "ip_address": "41.1.25.1",
+        "items": [{
+            "name": "Hoodie - Green, No",
+            "description": "Hoodie - Green, No",
+            "email": "",
+            "amount": 500,
+            "qty": 3,
+            "src": "http://localhost.test:8001/wp-content/uploads/2021/11/hoodie-green-1.jpg",
+            "url": "localhost.test:8001/product/hoodie/",
+            "metadata": {
+                "product_id": 13,
+                "variation_id": 30,
+                "variation": {
+                    "attribute_pa_color": "green",
+                    "attribute_logo": "No"
+                }
+            }
+        }],
+        "customer": {
+            "first_name": "BoJack",
+            "last_name": "Horseman",
+            "email": "bojack@horseman.com"
+        },
+        "billing_address": {
+            "first_name" :"Joe",
+            "last_name"  :"Conlin",
+            "company"    :"Speed Society",
+            "email"      :"joe@testing.com",
+            "phone"      :"760-555-1212",
+            "address_1"  :"123 Main st.",
+            "address_2"  :"104",
+            "city"       :"San Diego",
+            "state"      :"Ca",
+            "postcode"   :"92121",
+            "country"    :"US"
+        },
+        "shipping_address": {
+            "first_name": "Joe",
+            "last_name": "Conlin",
+            "company": "Speed Society",
+            "email": "joe@testing.com",
+            "phone": "760-555-1212",
+            "address_1": "123 Main st.",
+            "address_2": "104",
+            "city": "San Diego",
+            "state": "Ca",
+            "postcode": "92121",
+            "country": "US"
+        }
+    }
+}

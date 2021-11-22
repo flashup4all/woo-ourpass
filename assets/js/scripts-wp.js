@@ -95,16 +95,11 @@ class OurPassCartCheckoutButton extends HTMLElement {
             method: "GET",
             url: "/wp-json/wc/ourpass/v1/cart/data",
         }).success((response) => {
-            if (console && console.log) {
-                console.log("Sample of data:", response);
-            }
-
             OurpassCheckout.openIframe({
                 env: response.data.env,
                 api_key: response.data.api_key,
                 reference: response.data.reference,
                 amount: response.data.amount,
-                discount: response.data.discount,
                 qty: 1,
                 name: response.data.name,
                 email: response.data.email,
@@ -112,25 +107,27 @@ class OurPassCartCheckoutButton extends HTMLElement {
                 src: response.data.src,
                 url: response.data.url,
                 items: response.data.items,
-                onSuccess: (response) => {
-                    // jQuery.ajax({
-                    //     method: "POST",
-                    //     url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
-                    // }).success((data) => {
-                    //     data = JSON.parse(data);
+                onSuccess: (res) => {
+                    jQuery.ajax({
+                        method: "POST",
+                        url: "/wp-json/wc/ourpass/v1/order",
+                        data: {
+                            reference: response.data.reference,
+                        }
+                    }).success((data) => {
+                        if (data.success) {
+                            this.handleCompletedOrder();
+                            return;
+                        }
 
-                    //     if (data.status) {
-                    //         this.handleCompletedOrder();
-                    //         return;
-                    //     }
+                        this.displayErrorMessage('Error, please try again');
+                        jQuery('body').unblock();
 
-                    //     this.displayErrorMessage('Error, please try again');
-                    //     jQuery('body').unblock();
-
-                    // }).error((err) => {
-                    //     this.displayErrorMessage('Error, please try again');
-                    //     jQuery('body').unblock();
-                    // });
+                    }).error((err) => {
+                        console.log(err)
+                        this.displayErrorMessage('Error, please try again');
+                        jQuery('body').unblock();
+                    });
                 },
                 onClose: () => {
                     this.displayErrorMessage('Error, please try again');
@@ -365,10 +362,6 @@ class OurPassProductCheckoutButton extends HTMLElement {
                 atttributesValues: data.params.option_values
             }
         }).success((response) => {
-            if (console && console.log) {
-                console.log("Sample of data:", response);
-            }
-
             OurpassCheckout.openIframe({
                 env: response.data.env,
                 api_key: response.data.api_key,
@@ -382,25 +375,26 @@ class OurPassProductCheckoutButton extends HTMLElement {
                 src: response.data.src,
                 url: response.data.url,
                 items: response.data.items,
-                onSuccess: (response) => {
-                    // jQuery.ajax({
-                    //     method: "POST",
-                    //     url: (new URL(`V1/ourpass/verify/${reference}`, ourpassConfiguration.api_url)).href
-                    // }).success((data) => {
-                    //     data = JSON.parse(data);
+                onSuccess: (res) => {
+                    jQuery.ajax({
+                        method: "POST",
+                        url: "/wp-json/wc/ourpass/v1/order",
+                        data: {
+                            reference: response.data.reference,
+                        }
+                    }).success((data) => {
+                        if (data.success) {
+                            jQuery('body').unblock();
+                            return;
+                        }
 
-                    //     if (data.status) {
-                    //         jQuery('body').unblock();
-                    //         return;
-                    //     }
+                        this.displayErrorMessage('Error, please try again');
+                        jQuery('body').unblock();
 
-                    //     this.displayErrorMessage('Error, please try again');
-                    //     jQuery('body').unblock();
-
-                    // }).error((err) => {
-                    //     this.displayErrorMessage('Error, please try again');
-                    //     jQuery('body').unblock();
-                    // });
+                    }).error((err) => {
+                        this.displayErrorMessage('Error, please try again');
+                        jQuery('body').unblock();
+                    });
                 },
                 onClose: () => {
                     this.displayErrorMessage('Error, please try again');

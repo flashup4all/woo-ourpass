@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') || exit;
+
 /**
  * OurPass WooCommerce product attributes route object.
  */
@@ -57,8 +59,8 @@ class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
                     'email' => '',
                     'metadata' => [
                         'product_id' => $product->get_id(),
-                        'variation_id' => strval($cart_item['variation_id']),
-                        'variation' => $cart_item['variation']
+                        'variation_id' => ($cart_item['variation_id']) ? strval($cart_item['variation_id']) : null,
+                        'variation' => ($cart_item['variation']) ? $cart_item['variation'] : null
                     ]
                 ];
 
@@ -75,7 +77,6 @@ class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
             $ourpass_data['api_key'] = ourpasswc_get_secret_key();
             $ourpass_data['reference'] = 'WC_CHECKOUT_' . md5(uniqid(bin2hex(random_bytes(20)), true));
             $ourpass_data['amount'] = floatval($cart->total);
-            $ourpass_data['discount'] = '';
             $ourpass_data['qty'] = 1;
             $ourpass_data['name'] = $items[0]['name'];
             $ourpass_data['description'] = $items[0]['description'];

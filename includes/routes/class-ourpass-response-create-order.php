@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') || exit;
+
 /**
  * OurPass WooCommerce product attributes route object.
  */
@@ -39,6 +41,10 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
             $reference = $this->request->get_param('reference');
 
+            if(empty($reference)) {
+                throw new Exception("Checkout reference code is required");
+            }
+
             $data = $this->getOurPassReferenceData($reference);
 
             if(! $data['status']) {
@@ -60,53 +66,144 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 		}
 	}
 
+    /**
+     * Undocumented function
+     *
+     * @param array $data
+     * @return \WC_Order|\WP_Error|bool
+     */
     protected function createOrder($data)
     {
         global $woocommerce;
 
-        $billingAddress = array(
-            'first_name' => '111Joe',
-            'last_name'  => 'Conlin',
-            'company'    => 'Speed Society',
-            'email'      => 'joe@testing.com',
-            'phone'      => '760-555-1212',
-            'address_1'  => '123 Main st.',
-            'address_2'  => '104',
-            'city'       => 'San Diego',
-            'state'      => 'Ca',
-            'postcode'   => '92121',
-            'country'    => 'US'
-        );
+        $products = $this->parseProductIdAndQuantity($data['items']);
 
-        $user = get_user_by('login', $data['customer']['email']);
-
-        // $user = get_current_user_id();
-        
-        if(! $user = $user->ID) {
-            $user = wc_create_new_customer($data['customer']['email'], $data['customer']['email'], wp_generate_password());
+        if(count($products) === 0) {
+            throw new Exception("Product is empty");
         }
 
+        $user = get_current_user_id();
+
+        if($user === 0) {
+            $user = get_user_by('login', $data['customer']['email']);
+
+            if($user) {
+                $user = $user->ID;
+            }else{
+                $user = wc_create_new_customer($data['customer']['email'], $data['customer']['email'], wp_generate_password());
+                
+                if(is_wp_error($user)) {
+                    throw new Exception('Unable to create user for new order');
+                }
+                
+                wp_update_user([
+                    'ID' => $user,
+                    'display_name' => $data['customer']['first_name'].' '.$data['customer']['last_name'],
+                    'first_name' => $data['customer']['first_name'],
+                    'last_name' => $data['customer']['last_name']
+                ]);
+            }
+        }
 
         // Now we create the order
         $order = wc_create_order();
 
         $order->set_customer_id($user);
-        $order->set_address($billingAddress, 'billing');
-        $order->set_address($billingAddress, 'shipping');
 
-        $order->add_product(wc_get_product('275962'), 1); 
-        //
+        if(!empty($data['billing_address'])) {
+            $order->set_address(array(
+                'first_name' => $data['billing_address']['first_name'],
+                'last_name'  => $data['billing_address']['last_name'],
+                'email'      => $data['billing_address']['email'],
+                'phone'      => $data['billing_address']['phone'],
+                'company'    => $data['billing_address']['company'],
+                'address_1'  => $data['billing_address']['address_1'],
+                'address_2'  => $data['billing_address']['address_2'],
+                'city'       => $data['billing_address']['city'],
+                'state'      => $data['billing_address']['state'],
+                'postcode'   => $data['billing_address']['postcode'],
+                'country'    => $data['billing_address']['country']
+            ), 'billing');
+        }
+
+        if(!empty($data['shipping_address'])) {
+            $order->set_address(array(
+                'first_name' => $data['shipping_address']['first_name'],
+                'last_name'  => $data['shipping_address']['last_name'],
+                'email'      => $data['shipping_address']['email'],
+                'phone'      => $data['shipping_address']['phone'],
+                'company'    => $data['shipping_address']['company'],
+                'address_1'  => $data['shipping_address']['address_1'],
+                'address_2'  => $data['shipping_address']['address_2'],
+                'city'       => $data['shipping_address']['city'],
+                'state'      => $data['shipping_address']['state'],
+                'postcode'   => $data['shipping_address']['postcode'],
+                'country'    => $data['shipping_address']['country']
+            ), 'shipping');
+        }
+
+        foreach($products as $product) {
+            $order->add_product($product['product'], $product['qty'], $product['args']); 
+        }
+
         $order->calculate_totals();
+
         $order->payment_complete($data['reference']);
-        $order->update_status("Completed", 'Order completed via OurPass', TRUE);
+
+        $order->update_status("completed", 'Order completed via OurPass', TRUE);
+
         $order->update_meta_data('ourpass_checkout_reference', $data['reference']);
-        $order->save();
 
         return $order;
     }
 
+    protected function parseProductIdAndQuantity($items)
+    {
+        $return = array();
+
+        foreach($items as $item)
+        {
+            $args = array();
+
+            // get the product id and define the $product variable
+            $product = wc_get_product($item['metadata']['product_id']);
+
+            // Check if product is variable
+            if ($product->is_type('variable') && !empty($item['metadata']['variation_id'])) {
+
+                $var_product = new WC_Product_Variation($item['metadata']['variation_id']);
+
+                $product = wc_get_product($var_product->get_id());
+
+                $args['product'] = $product;
+                $args['qty'] = $item['qty'];
+                $args['args'] = [
+                    'subtotal' => wc_get_price_excluding_tax($product, array('qty' => $item['qty'], 'price' => $item['amount'])),
+                    'total' => wc_get_price_excluding_tax($product, array('qty' => $item['qty'], 'price' => $item['amount'])),
+                ];
+            }
+            else {
+                $args['product'] = $product;
+                $args['qty'] = $item['qty'];
+                $args['args'] = [
+                    'subtotal' => wc_get_price_excluding_tax($product, array('qty' => $item['qty'], 'price' => $item['amount'])),
+                    'total' => wc_get_price_excluding_tax($product, array('qty' => $item['qty'], 'price' => $item['amount'])),
+                ];
+            }
+
+            $return[] = $args;
+        }
+
+        return $return;
+    }
+
     protected function getOurPassReferenceData($reference)
     {
+        //SAMPLE
+        $string = file_get_contents(OURPASSWC_PATH. "samples/sample-verification.json");
+        return json_decode($string, true);
+
+        //REAL
         $baseUrl = OURPASSWC_ENVIRONMENT === 'production' ? OURPASSWC_PRODUCTION_BASE_URL : OURPASSWC_SANDBOX_BASE_URL;
 
         $ourpass_url = $baseUrl . '/business/seller-user-check';
@@ -123,99 +220,14 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
         $request = wp_remote_post($ourpass_url, $args);
 
-        if (!(!is_wp_error($request) && in_array(wp_remote_retrieve_response_code($request), [200, 201]))) {
+        if(is_wp_error($request)) {
             throw new Exception('Unable to reach OurPass endpoint');
-            exit;
+        }
+
+        if (! in_array(wp_remote_retrieve_response_code($request), [200, 201])) {
+            throw new Exception("Checkout verification wasn't successful");
         }
 
         return json_decode(wp_remote_retrieve_body($request), true);
-    }
-
-    // public function getProduct()
-    // {
-    //     $products_to_add = array();
-
-    //     // Loop through the $imported_order_items array to check if it's simple or variable   
-    //     foreach ($imported_order_items as $item) {
-
-    //         // get the product id and define the $product variable
-    //         $id = wc_get_product_id_by_sku($item['SKU']);
-    //         $product = wc_get_product($id);
-
-    //         // Check if product is variable
-    //         if ($product->is_type('variable')) {
-
-    //             $available_variations = $product->get_available_variations();
-
-    //             foreach ($available_variations as $variation) {
-
-    //                 $variation_id = $variation['variation_id'];
-
-    //                 $var_product = wc_get_product($variation_id);
-
-    //                 $atts = $var_product->get_attributes();
-
-
-    //                 // Conditional to check for variations that are varied by both size and colour
-
-    //                 if (isset($atts['pa_shirt-size']) && $atts['pa_shirt-size'] === strtolower($item['size']) && isset($atts['pa_colour']) && $atts['pa_colour'] === strtolower($item['colour'])) {
-
-    //                     // check if the key exists and add to the value, if not we'll define it
-    //                     if (!array_key_exists($variation_id, $products_to_add)) {
-
-    //                         $products_to_add[$variation_id] = $item['qty'];
-    //                     } else {
-
-    //                         $products_to_add[$variation_id] += $item['qty'];
-    //                     }
-    //                 }
-
-    //                 // only comes in shirt size variations, so we don't look for colour
-    //                 else if (isset($atts['pa_shirt-size']) && $atts['pa_shirt-size'] === strtolower($item['size']) && !isset($atts['pa_colour'])) {
-
-    //                     // check if the key exists and add to the value, if not we'll define it
-    //                     if (!array_key_exists($variation_id, $products_to_add)) {
-
-    //                         $products_to_add[$variation_id] = $item['qty'];
-    //                     } else {
-
-    //                         $products_to_add[$variation_id] += $item['qty'];
-    //                     }
-    //                 }
-
-    //                 // only comes in blouse size variations
-    //                 else if (isset($atts['pa_blouse_size']) && $atts['pa_blouse_size'] === strtolower($item['size'])) {
-
-    //                     // check if the key exists and add to the value, if not we'll define it
-    //                     if (!array_key_exists($variation_id, $products_to_add)) {
-
-    //                         $products_to_add[$variation_id] = $item['qty'];
-    //                     } else {
-
-    //                         $products_to_add[$variation_id] += $item['qty'];
-    //                     }
-    //                 }
-    //             } // end $available_variations foreach loop      
-    //         }
-    //         else {
-    //             $products_to_add[$product->get_id()] = $item['qty'];
-    //         }
-    //     }
-    // }
-    
-    protected function get_product_variant_attributes($attributes)
-    {
-        $return = array();
-
-        foreach ($attributes as $key => $value) {
-            $return[$this->standardize_attribute_key($key)] = $value;
-        }
-
-        return $return;
-    }
-    
-    protected function standardize_attribute_key($att_key)
-    {
-        return 'attribute_' . sanitize_title($att_key);
     }
 }
