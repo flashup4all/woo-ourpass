@@ -5,9 +5,6 @@
  * @package OurPass
  */
 
-// Define the API route base path.
-define( 'OURPASSWC_ROUTES_BASE', 'wc/ourpass/v1' );
-
 // Load route base class.
 require_once OURPASSWC_PATH . 'includes/routes/class-route.php';
 require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-data-from-cart.php';

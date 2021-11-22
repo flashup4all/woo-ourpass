@@ -20,16 +20,52 @@ if (!defined('ABSPATH')) {
 define('OURPASSWC_PATH', plugin_dir_path(__FILE__));
 define('OURPASSWC_URL', plugin_dir_url(__FILE__));
 define('OURPASSWC_VERSION', '1.0.2');
-// OLD VERSION
-define('WC_OURPASS_MAIN_FILE', __FILE__);
-define('WC_OURPASS_URL', untrailingslashit(plugins_url('/', __FILE__)));
-define('WC_OURPASS_VERSION', '1.0.2');
+
+// Load constants.
+require_once OURPASSWC_PATH . 'includes/constants.php';
 
 // WooCommerce version utilities.
 require_once OURPASSWC_PATH . 'includes/version.php';
 
+function ourpasswc_update_value()
+{
+    $hasBeenActivated = get_option('ourpasswc_next_version_activated', false);
+
+    if (!$hasBeenActivated) 
+    {
+        $wc_ourpass_settings = get_option('woocommerce_ourpass_settings');
+
+        if ($wc_ourpass_settings) {
+
+            if (false === get_option(OURPASSWC_SETTING_TEST_MODE)) {
+                update_option(OURPASSWC_SETTING_TEST_MODE, (isset($wc_ourpass_settings['testmode']) && 'yes' === $wc_ourpass_settings['testmode']) ? '1' : '0');
+            }
+
+            if (false === get_option(OURPASSWC_SETTING_TEST_PUBLIC_KEY)) {
+                update_option(OURPASSWC_SETTING_TEST_PUBLIC_KEY, isset($wc_ourpass_settings['test_public_key']) ? $wc_ourpass_settings['test_public_key'] : '');
+            }
+
+            if (false === get_option(OURPASSWC_SETTING_TEST_SECRET_KEY)) {
+                update_option(OURPASSWC_SETTING_TEST_SECRET_KEY, isset($wc_ourpass_settings['test_secret_key']) ? $wc_ourpass_settings['test_secret_key'] : '');
+            }
+
+            if (false === get_option(OURPASSWC_SETTING_LIVE_PUBLIC_KEY)) {
+                update_option(OURPASSWC_SETTING_LIVE_PUBLIC_KEY, isset($wc_ourpass_settings['live_public_key']) ? $wc_ourpass_settings['live_public_key'] : '');
+            }
+
+            if (false === get_option(OURPASSWC_SETTING_LIVE_SECRET_KEY)) {
+                update_option(OURPASSWC_SETTING_LIVE_SECRET_KEY, isset($wc_ourpass_settings['live_secret_key']) ? $wc_ourpass_settings['live_secret_key'] : '');
+            }
+        }
+        update_option('ourpasswc_next_version_activated', true);
+    }
+}
+
+
 // Check whether the woocommerce plugin is active.
 if ( ourpasswc_woocommerce_is_active() ) {
+    //Update current plugin with previous plugin value
+    ourpasswc_update_value();
 	// OurPass debug functions.
 	require_once OURPASSWC_PATH . 'includes/debug.php';
 	// WP Admin plugin settings.
@@ -57,82 +93,3 @@ function ourpasswc_plugin_activated()
     }
 }
 register_activation_hook(__FILE__, 'ourpasswc_plugin_activated');
-
-
-
-
-/**
- * Initialize OurPass WooCommerce payment gateway.
- */
-function tbz_wc_ourpass_init()
-{
-    if (!class_exists('WC_Payment_Gateway')) {
-        // add_action('admin_notices', 'tbz_wc_ourpass_wc_missing_notice');
-        return;
-    }
-
-    add_action('admin_notices', 'tbz_wc_ourpass_testmode_notice');
-
-    require_once dirname(__FILE__) . '/includes/class-wc-gateway-ourpass.php';
-
-    add_filter('woocommerce_payment_gateways', 'tbz_wc_add_ourpass_gateway');
-
-    add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'tbz_woo_ourpass_plugin_action_links');
-}
-// add_action('plugins_loaded', 'tbz_wc_ourpass_init', 99);
-
-
-/**
- * Add Settings link to the plugin entry in the plugins menu.
- *
- * @param array $links Plugin action links.
- *
- * @return array
- **/
-function tbz_woo_ourpass_plugin_action_links($links)
-{
-
-    $settings_link = array(
-        'settings' => '<a href="' . admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass') . '" title="View OurPass WooCommerce Settings">Settings</a>',
-    );
-
-    return array_merge($settings_link, $links);
-}
-
-/**
- * Add OurPass Gateway to WooCommerce.
- *
- * @param array $methods WooCommerce payment gateways methods.
- *
- * @return array
- */
-function tbz_wc_add_ourpass_gateway($methods)
-{
-    $methods[] = 'WC_Gateway_Ourpass';
-    return $methods;
-}
-
-/**
- * Display a notice if WooCommerce is not installed
- */
-function tbz_wc_ourpass_wc_missing_notice()
-{
-    echo '<div class="error"><p><strong>' . sprintf('OurPass requires WooCommerce to be installed and active. Click %s to install WooCommerce.', '<a href="' . admin_url('plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=772&height=539') . '" class="thickbox open-plugin-details-modal">here</a>') . '</strong></p></div>';
-}
-
-/**
- * Display the test mode notice.
- **/
-function tbz_wc_ourpass_testmode_notice()
-{
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-
-    $ourpass_settings = get_option('woocommerce_ourpass_settings');
-    $test_mode         = isset($ourpass_settings['testmode']) ? $ourpass_settings['testmode'] : '';
-
-    if ('yes' === $test_mode) {
-        echo '<div class="error"><p>' . sprintf('OurPass test mode is still enabled, Click <strong><a href="%s">here</a></strong> to disable it when you want to start accepting live payment on your site.', esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=ourpass'))) . '</p></div>';
-    }
-}

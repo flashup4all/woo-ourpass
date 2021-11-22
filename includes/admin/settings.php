@@ -10,8 +10,6 @@
 
 // Load admin notices.
 require_once OURPASSWC_PATH . 'includes/admin/notices.php';
-// Load admin constants.
-require_once OURPASSWC_PATH . 'includes/admin/constants.php';
 // Load admin fields.
 require_once OURPASSWC_PATH . 'includes/admin/fields.php';
 

@@ -61,28 +61,6 @@ function ourpasswc_should_hide_cart_checkout_button() {
 }
 
 /**
- * Returns true if the OurPass Login button should be hidden for any of the following reasons:
- * - Test mode is enabled and current user is someone who should NOT see the button when test mode is on.
- * - The OURPASSWC_SETTING_APP_ID option is empty.
- *
- * @return bool
- */
-function ourpasswc_should_hide_login_button() {
-	/**
-	 * Filter to set whether or not to hide the OurPass Login button. Returns false by default.
-	 *
-	 * @param bool $should_hide Flag to pass through the filters for whether or not to hide the login button.
-	 *
-	 * @return bool
-	 */
-	$should_hide = apply_filters( 'ourpasswc_should_hide_login_button', false );
-
-	ourpasswc_log_info( 'Login button' . ( $should_hide ? '' : ' not' ) . ' hidden.' );
-
-	return $should_hide;
-}
-
-/**
  * Checks if the OurPass Checkout button should be hidden for the current user based on the Test Mode field and their email
  * The button should be hidden for all non-OurPass users if Test Mode is enabled, and should be visible for everyone if
  * Test Mode is disabled.
@@ -105,7 +83,6 @@ function ourpasswc_is_hidden_for_test_mode( $should_hide ) {
 }
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_is_hidden_for_test_mode', 1 );
 add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_is_hidden_for_test_mode', 1 );
-add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_is_hidden_for_test_mode', 1 );
 
 /**
  * Checks if the app secret and public key is empty.
@@ -122,14 +99,13 @@ function ourpasswc_is_app_key_empty( $should_hide ) {
 			$should_hide = true;
 		}
 
-		ourpasswc_log_info( 'OurPass buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for no app ID.' );
+		ourpasswc_log_info( 'OurPass buttons' . ( $should_hide ? '' : ' not' ) . ' hidden for no app key.' );
 	}
 
 	return $should_hide;
 }
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_is_app_key_empty', 1 );
 add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_is_app_key_empty', 1 );
-add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_is_app_key_empty', 1 );
 
 /**
  * Checks if is supported currency.
@@ -159,7 +135,6 @@ function ourpasswc_should_hide_for_unsupported_country( $should_hide ) {
 }
 add_filter( 'ourpasswc_should_hide_pdp_checkout_button', 'ourpasswc_should_hide_for_unsupported_country', 1 );
 add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_should_hide_for_unsupported_country', 1 );
-add_filter( 'ourpasswc_should_hide_login_button', 'ourpasswc_should_hide_for_unsupported_country', 1 );
 
 /**
  * Determine if the OurPass PDP button should be hidden for a specific product.

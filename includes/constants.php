@@ -34,6 +34,8 @@ define('OURPASSWC_ONBOARDING_URL', 'https://merchant.ourpass.co');
 define('OURPASSWC_SUPPORTED_CURRENCY', 'NGN');
 define('OURPASSWC_PRODUCTION_BASE_URL', 'https://beta-api.ourpass.co');
 define('OURPASSWC_SANDBOX_BASE_URL', 'https://user-api-staging.ourpass.co');
+// Define the API route base path.
+define('OURPASSWC_ROUTES_BASE', 'wc/ourpass/v1');
 
 define(
 	'OURPASSWC_SETTING_PDP_BUTTON_STYLES_DEFAULT',

@@ -13,7 +13,7 @@ function ourpasswc_enqueue_script()
 {
 	wp_enqueue_script(
 		'ourpass-cdn',
-		OURPASSWC_URL . 'assets/js/cdn.js',
+		OURPASSWC_URL . 'assets/dist/cdn.js',
 		array('jquery'),
 		OURPASSWC_VERSION,
 		true
@@ -21,7 +21,7 @@ function ourpasswc_enqueue_script()
 
 	wp_enqueue_script(
 		'ourpass-woocommerce',
-		OURPASSWC_URL . 'assets/js/scripts-wp.js',
+		OURPASSWC_URL . 'assets/dist/scripts-wp.js',
 		array('jquery', 'ourpass-cdn'),
 		OURPASSWC_VERSION,
 		true
@@ -59,7 +59,7 @@ function ourpasswc_admin_enqueue_scripts()
 
 	wp_enqueue_script(
 		'ourpasswc-admin-js',
-		OURPASSWC_URL . 'assets/js/scripts-wp-admin.min.js',
+		OURPASSWC_URL . 'assets/dist/scripts-wp-admin.js',
 		array('jquery', 'select2'),
 		OURPASSWC_VERSION,
 		true
@@ -72,7 +72,7 @@ function ourpasswc_admin_enqueue_scripts()
 	}
 	wp_enqueue_style(
 		'ourpass-admin-css',
-		OURPASSWC_URL . 'assets/css/styles.css',
+		OURPASSWC_URL . 'assets/dist/styles.css',
 		array(),
 		OURPASSWC_VERSION
 	);
@@ -102,27 +102,3 @@ function ourpasswc_wp_head()
 <?php
 }
 add_action('wp_head', 'ourpasswc_wp_head');
-
-/**
- * Enqueue block editor assets for the Gutenberg blocks.
- */
-// function ourpasswc_enqueue_block_editor_assets() {
-
-// 	// Enqueue the script.
-// 	wp_enqueue_script(
-// 		'ourpasswc-block-editor-js',
-// 		OURPASSWC_URL . 'assets/dist/blocks/index.js',
-// 		array( 'wp-blocks', 'wp-i18n', 'wp-components', 'wp-element' ),
-// 		OURPASSWC_VERSION,
-// 		true
-// 	);
-
-// 	// Enqueue the stylesheet.
-// 	wp_enqueue_style(
-// 		'ourpasswc-block-editor-css',
-// 		OURPASSWC_URL . 'assets/dist/blocks/index.css',
-// 		array(),
-// 		OURPASSWC_VERSION
-// 	);
-// }
-// add_action( 'enqueue_block_editor_assets', 'ourpasswc_enqueue_block_editor_assets' );
