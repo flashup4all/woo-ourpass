@@ -64,7 +64,10 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
             $productData['qty'] = intval($quantity);
             $productData['src'] = wp_get_attachment_image_url($product->get_image_id(), 'full');
             $productData['url'] = preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id)));
+            //METADATA
             $productData['metadata']['product_id'] = $product->get_id();
+            $productData['metadata']['qty'] = intval($quantity);
+            $productData['metadata']['amount'] = floatval($product->get_price());
             $productData['metadata']['variation_id'] = null;
             $productData['metadata']['variation'] = null;
 
@@ -76,15 +79,19 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
                 $productData['description'] = $var_product->get_name();
                 $productData['amount'] = floatval($var_product->get_price());
                 $productData['src'] = wp_get_attachment_image_url($var_product->get_image_id(), 'full');
-                $productData['metadata']['variation_id'] = $variant_id;
+                //METADATA
+                $productData['metadata']['amount'] = floatval($var_product->get_price());
+                $productData['metadata']['variation_id'] = $var_product->get_id();
                 $productData['metadata']['variation'] = $this->get_product_variant_attributes($var_product->get_attributes()); 
-            }         
+            }
+
+            $referenceCode = 'WC_CHECKOUT_' . md5(uniqid(bin2hex(random_bytes(20)), true)) . '' . ourpasswc_get_last_sale_order_post_id();
 
             $ourpass_data = array();
 
             $ourpass_data['env'] = OURPASSWC_ENVIRONMENT;
             $ourpass_data['api_key'] = ourpasswc_get_secret_key();
-            $ourpass_data['reference'] = 'WC_CHECKOUT_' . md5(uniqid(bin2hex(random_bytes(20)), true));
+            $ourpass_data['reference'] = $referenceCode;
             $ourpass_data['amount'] = $productData['amount'] * $productData['qty'];
             $ourpass_data['qty'] = 1;
             $ourpass_data['name'] = $productData['name'];
@@ -100,7 +107,10 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
                 'qty' => $productData['qty'],
                 'src' => $productData['src'],
                 'url' => $productData['url'],
-                'metadata' => $productData['metadata']
+            ];
+            $ourpass_data['metadata'] = [
+                'line_items_total' => $productData['amount'] * $productData['qty'],
+                'items' => $productData['metadata'],
             ];
 
             return new \WP_REST_Response([

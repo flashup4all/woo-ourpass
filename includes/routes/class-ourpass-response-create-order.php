@@ -45,10 +45,18 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
                 throw new \Exception('Invalid Request');
             }
 
-            $reference = $this->request->get_param('reference');
+            $reference = trim($this->request->get_param('reference'));
 
             if(empty($reference)) {
                 throw new Exception("Checkout reference code is required");
+            }
+
+            if(substr($reference, 0, 12) !== "WC_CHECKOUT_") {
+                throw new Exception("Invalid Checkout reference code");
+            }
+
+            if(!ourpasswc_reference_is_unique($reference)) {
+                throw new Exception("Checkout reference already inserted");
             }
 
             $data = $this->getOurPassReferenceData($reference);
@@ -57,7 +65,7 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
                 throw new Exception("Checkout wasn't successful");
             }
 
-            $this->createOrder($data["data"]);
+            $this->createOrder($data["data"], $reference);
 
             return new \WP_REST_Response([
                 'success' => true,
@@ -72,17 +80,24 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 		}
 	}
 
-    /**
-     * Undocumented function
-     *
-     * @param array $data
-     * @return \WC_Order|\WP_Error|bool
-     */
-    protected function createOrder($data)
+    
+    protected function createOrder($data, $reference)
     {
         global $woocommerce;
 
-        $products = $this->parseProductIdAndQuantity($data['items']);
+        $metadata = isset($data['metadata']) ? $data['metadata'] : [];
+
+        $metadata = is_array($metadata) ? $metadata : json_decode($data['metadata'], true);
+
+        if(empty($metadata)) {
+            throw new Exception("Invalid checkout order1");
+        }
+
+        if (!isset($metadata['items']) && empty($metadata['items'])) {
+            throw new Exception("Invalid checkout order2");
+        }
+
+        $products = $this->parseProductIdAndQuantity($metadata['items']);
 
         if(count($products) === 0) {
             throw new Exception("Product is empty");
@@ -90,23 +105,25 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
         $user = get_current_user_id();
 
-        if($user === 0) {
-            $user = get_user_by('login', $data['customer']['email']);
+        if($user < 1) {
+            $user = get_user_by('login', $data['email']);
 
             if($user) {
                 $user = $user->ID;
             }else{
-                $user = wc_create_new_customer($data['customer']['email'], $data['customer']['email'], wp_generate_password());
+                $user = wc_create_new_customer($data['email'], $data['email'], wp_generate_password());
                 
                 if(is_wp_error($user)) {
                     throw new Exception('Unable to create user for new order');
                 }
+
+                $names = explode(" ", $data['name']);
                 
                 wp_update_user([
                     'ID' => $user,
-                    'display_name' => $data['customer']['first_name'].' '.$data['customer']['last_name'],
-                    'first_name' => $data['customer']['first_name'],
-                    'last_name' => $data['customer']['last_name']
+                    'display_name' => $data['name'],
+                    'first_name' => (isset($names[0])) ? $names[0] : '',
+                    'last_name' => (isset($names[1])) ? $names[1] : '',
                 ]);
             }
         }
@@ -116,36 +133,24 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
         $order->set_customer_id($user);
 
-        if(!empty($data['billing_address'])) {
-            $order->set_address(array(
-                'first_name' => $data['billing_address']['first_name'],
-                'last_name'  => $data['billing_address']['last_name'],
-                'email'      => $data['billing_address']['email'],
-                'phone'      => $data['billing_address']['phone'],
-                'company'    => $data['billing_address']['company'],
-                'address_1'  => $data['billing_address']['address_1'],
-                'address_2'  => $data['billing_address']['address_2'],
-                'city'       => $data['billing_address']['city'],
-                'state'      => $data['billing_address']['state'],
-                'postcode'   => $data['billing_address']['postcode'],
-                'country'    => $data['billing_address']['country']
-            ), 'billing');
-        }
+        if(isset($data['address'])) {
 
-        if(!empty($data['shipping_address'])) {
-            $order->set_address(array(
-                'first_name' => $data['shipping_address']['first_name'],
-                'last_name'  => $data['shipping_address']['last_name'],
-                'email'      => $data['shipping_address']['email'],
-                'phone'      => $data['shipping_address']['phone'],
-                'company'    => $data['shipping_address']['company'],
-                'address_1'  => $data['shipping_address']['address_1'],
-                'address_2'  => $data['shipping_address']['address_2'],
-                'city'       => $data['shipping_address']['city'],
-                'state'      => $data['shipping_address']['state'],
-                'postcode'   => $data['shipping_address']['postcode'],
-                'country'    => $data['shipping_address']['country']
-            ), 'shipping');
+            $names = explode(" ", $data['name']);
+
+            $address = [
+                'first_name' => (isset($names[0])) ? $names[0] : '',
+                'last_name' => (isset($names[1])) ? $names[1] : '',
+                'email'      => $data['email'],
+                'phone'      => $data['userMobile'],
+                'address_1'  => $data['address'],
+                'town'       => $data['townName'],
+                'city'       => $data['cityName'],
+                'state'      => $data['state'],
+                'country'    => $data['country']
+            ];
+
+            $order->set_address($address, 'billing');
+            $order->set_address($address, 'shipping');
         }
 
         foreach($products as $product) {
@@ -154,11 +159,15 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
         $order->calculate_totals();
 
-        $order->payment_complete($data['reference']);
+        $order->add_meta_data(OURPASSWC_ORDER_REFERENCE_META_KEY, $reference, true);
 
-        $order->update_status("completed", 'Order completed via OurPass', TRUE);
+        $order->payment_complete($reference);
 
-        $order->update_meta_data('ourpass_checkout_reference', $data['reference']);
+        $note = "OurPass Checkout: Completed with reference key ". $reference;
+
+        $order->update_status("completed", $note, TRUE);
+
+        $order->save();
 
         return $order;
     }
@@ -172,12 +181,12 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
             $args = array();
 
             // get the product id and define the $product variable
-            $product = wc_get_product($item['metadata']['product_id']);
+            $product = wc_get_product($item['product_id']);
 
             // Check if product is variable
-            if ($product->is_type('variable') && !empty($item['metadata']['variation_id'])) {
+            if ($product->is_type('variable') && !empty($item['variation_id'])) {
 
-                $var_product = new WC_Product_Variation($item['metadata']['variation_id']);
+                $var_product = new WC_Product_Variation($item['variation_id']);
 
                 $product = wc_get_product($var_product->get_id());
 
@@ -227,11 +236,11 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
         $request = wp_remote_post($ourpass_url, $args);
 
         if(is_wp_error($request)) {
-            throw new Exception('Unable to reach OurPass endpoint');
+            throw new Exception('Unable to reach verification endpoint');
         }
 
         if (! in_array(wp_remote_retrieve_response_code($request), [200, 201])) {
-            throw new Exception("Checkout verification wasn't successful");
+            throw new Exception("Checkout verification wasn't successful, order does not exist or has been fulfilled");
         }
 
         return json_decode(wp_remote_retrieve_body($request), true);

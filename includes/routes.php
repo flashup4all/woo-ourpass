@@ -15,7 +15,6 @@ require_once OURPASSWC_PATH . 'includes/routes/class-ourpass-response-create-ord
  * Register OurPass Woocommerce routes for the REST API.
  */
 function ourpasswc_rest_api_init() {
-
 	new OurPass_Routes_OurPass_Data_From_Cart();
 	new OurPass_Routes_OurPass_Data_From_Product();
 	new OurPass_Routes_OurPass_Response_Create_Order();
@@ -43,43 +42,3 @@ function simulate_as_not_rest( $is_rest_api_request ) {
 	return false;
 }
 add_filter('woocommerce_is_rest_api_request','simulate_as_not_rest');
-
-
-/**
- * Abstract REST API permissions callback.
- *
- * @param string $capability Capability name to check.
- * @param string $log_string Initial string for the permission check log.
- *
- * @return bool
- */
-function ourpasswc_api_general_permission_callback( $capability, $log_string ) {
-	// Make sure an instance of WooCommerce is loaded.
-	// This will load the `WC_REST_Authentication` class, which
-	// handles the API consumer key and secret.
-	WC();
-
-	$has_permission = current_user_can( $capability );
-
-	ourpasswc_log_info( $log_string . ': ' . ( $has_permission ? 'granted' : 'denied' ) );
-
-	return $has_permission;
-}
-
-/**
- * REST API permissions callback.
- *
- * @return bool
- */
-function ourpasswc_api_permission_callback() {
-	return ourpasswc_api_general_permission_callback( 'manage_options', 'API Manage Options Permission Callback' );
-}
-
-/**
- * REST API permissions callback for product attributes.
- *
- * @return bool
- */
-function ourpasswc_api_managewc_permission_callback() {
-	return ourpasswc_api_general_permission_callback( 'manage_woocommerce', 'API Manage WooCommerce Permission Callback' );
-}

@@ -126,8 +126,9 @@ class Ourpass {
 
   generateIframeSrc() {
     const items = this.clientInfo.items ? JSON.stringify(this.clientInfo.items) : '';
+    const metadata = this.clientInfo.metadata ? JSON.stringify(this.clientInfo.metadata) : '';
 
-    const src = `${this.#config.baseUrl}/checkout/?src=${this.clientInfo.src}&items=${items}&amount=${this.clientInfo.amount}&url=${this.clientInfo.url}&name=${this.clientInfo.name}&email=${this.clientInfo.email}&qty=${this.clientInfo.qty}&description=${this.clientInfo.description}&api_key=${this.clientInfo.api_key}&reference=${this.clientInfo.reference}`;
+    const src = `${this.#config.baseUrl}/checkout/?src=${this.clientInfo.src}&items=${items}&metadata=${metadata}&amount=${this.clientInfo.amount}&url=${this.clientInfo.url}&name=${this.clientInfo.name}&email=${this.clientInfo.email}&qty=${this.clientInfo.qty}&description=${this.clientInfo.description}&api_key=${this.clientInfo.api_key}&reference=${this.clientInfo.reference}`;
 
     return src;
   }
@@ -253,8 +254,9 @@ class Ourpass {
         }
 
         if (event.data == 'false pass1') {
+          const responsePayload = this.clientInfo;
           this.removeElement(backDropElement)
-          this.clientInfo.onSuccess(clientInfo)
+          this.clientInfo.onSuccess(responsePayload)
         }
       }
     })

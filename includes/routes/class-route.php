@@ -38,7 +38,7 @@ abstract class OurPass_Routes_Route {
 	 *
 	 * @var callable
 	 */
-	protected $permission_callback = 'ourpasswc_api_permission_callback';
+	protected $permission_callback = '__return_true';
 
 	/**
 	 * Request object passed to the route endpoint.

@@ -155,6 +155,7 @@ class OurPassCartCheckoutButton extends HTMLElement {
                 src: response.data.src,
                 url: response.data.url,
                 items: response.data.items,
+                metadata: response.data.metadata,
                 onSuccess: (res) => {
                     jQuery.ajax({
                         method: "POST",
@@ -429,6 +430,7 @@ class OurPassProductCheckoutButton extends HTMLElement {
                 src: response.data.src,
                 url: response.data.url,
                 items: response.data.items,
+                metadata: response.data.metadata,
                 onSuccess: (res) => {
                     jQuery.ajax({
                         method: "POST",

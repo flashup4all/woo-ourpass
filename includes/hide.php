@@ -317,28 +317,3 @@ function ourpasswc_should_hide_cart_button_because_unsupported_products( $should
 	return $should_hide;
 }
 add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_should_hide_cart_button_because_unsupported_products', 2 );
-
-/**
- * Check the coupon count.
- *
- * @param bool $should_hide Flag from filter to hide or not hide the cart button.
- *
- * @return bool
- */
-function ourpasswc_should_hide_cart_checkout_button_because_too_many_coupons( $should_hide ) {
-
-	if ( ! $should_hide ) {
-		$cart = WC()->cart;
-
-		// Check the coupon count.
-		$applied_coupons = $cart->get_applied_coupons();
-		if ( count( $applied_coupons ) > 1 ) {
-			$should_hide = true;
-		}
-
-		ourpasswc_log_info( 'Cart button' . ( $should_hide ? '' : ' not' ) . ' hidden for too many coupons.' );
-	}
-
-	return $should_hide;
-}
-add_filter( 'ourpasswc_should_hide_cart_checkout_button', 'ourpasswc_should_hide_cart_checkout_button_because_too_many_coupons', 2 );

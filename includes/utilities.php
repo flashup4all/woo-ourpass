@@ -284,3 +284,37 @@ function ourpasswc_get_normalized_product_options( $product_options ) {
 
 	return ourpasswc_is_json( $product_options ) ? $product_options : '';
 }
+
+/**
+ * Check if reference already exist
+ *
+ * @param array $reference
+ * @return bool
+ */
+function ourpasswc_reference_is_unique($reference)
+{
+	global $wpdb;
+
+	$data = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT post_id FROM $wpdb->postmeta WHERE meta_key=%s AND meta_value=%s", array(OURPASSWC_ORDER_REFERENCE_META_KEY, $reference)));
+	
+	return count($data) < 1;
+}
+
+/**
+ * Check if reference already exist
+ *
+ * @param array $reference
+ * @return int
+ */
+function ourpasswc_get_last_sale_order_post_id()
+{
+	global $wpdb;
+
+	$data = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT post_id FROM $wpdb->postmeta WHERE meta_key=%s ORDER BY `post_id` DESC LIMIT 1 OFFSET 0", array(OURPASSWC_ORDER_REFERENCE_META_KEY)));
+
+	if(count($data) < 1) {
+        return 0;
+	}
+
+	return intval($data[0]->post_id);
+}
