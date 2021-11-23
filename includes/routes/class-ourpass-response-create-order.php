@@ -85,21 +85,21 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
     {
         global $woocommerce;
 
-        $metadata = isset($data['metadata']) ? $data['metadata'] : [];
+        $metadata = isset($data['metadata']) ? $data['metadata'] : array();
 
         $metadata = is_array($metadata) ? $metadata : json_decode($data['metadata'], true);
 
         if(empty($metadata)) {
-            throw new Exception("Invalid checkout order1");
+            throw new Exception("Invalid checkout order, metadata not available");
         }
 
         if (!isset($metadata['items']) && empty($metadata['items'])) {
-            throw new Exception("Invalid checkout order2");
+            throw new Exception("Invalid checkout order, items not available");
         }
 
         $products = $this->parseProductIdAndQuantity($metadata['items']);
 
-        if(count($products) === 0) {
+        if(count($products) < 1) {
             throw new Exception("Product is empty");
         }
 
