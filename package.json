@@ -2,10 +2,8 @@
   "name": "woo-ourpass",
   "version": "1.0.0",
   "description": "OurPass checkout Wordpress  plugin for Woo-commerce",
-  "main": "index.js",
   "scripts": {
-    "build": "gulp build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -24,7 +22,6 @@
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.16.4",
     "@babel/plugin-proposal-private-methods": "^7.16.0",
-    "babel-preset-env": "^1.7.0",
     "babel-preset-minify": "^0.5.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
