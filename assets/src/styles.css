@@ -6,7 +6,7 @@
 	font-size: 12px;
 }
 @media screen and (min-width: 783px) {
-	.ourpass-settings .input-field {
+	.ourpass-settings .input-field .ourpass-select{
 		min-height: 40px;
 		width: 400px;
 	}
@@ -14,44 +14,6 @@
 .ourpass-settings textarea {
 	resize: none;
 }
-
-.ourpass-image-select {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 -10px;
-	padding-top: 10px;
-}
-.ourpass-image-select--item {
-	flex-basis: 50%;
-	padding: 0 10px;
-	margin: 0 0 20px;
-	box-sizing: border-box;
-}
-
-@media screen and (max-width: 480px) {
-	.ourpass-image-select--item {
-		flex-basis: 100%;
-	}
-}
-
-.ourpass-image-select--label-text {
-	display: block;
-	margin-bottom: 6px;
-	line-height: 20px;
-}
-.ourpass-image-select--image {
-	max-width: 100%;
-	height: auto;
-	border: 2px solid #c3c4c7;
-}
-.ourpass-image-select--input:checked + label .ourpass-image-select--label-text {
-	font-weight: bold;
-}
-.ourpass-image-select--input:checked + label .ourpass-image-select--image {
-	border: 2px solid #000;
-	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);
-}
-
 /* NOTIFICATION */
 .ourpass-notice {
 	margin: 5px 0 15px;
@@ -101,7 +63,6 @@
 		float: none;
 	}
 }
-
 /* STATUS */
 .ourpass-status {
 	padding-bottom: 40px;

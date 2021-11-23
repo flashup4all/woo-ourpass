@@ -42,7 +42,7 @@ class OurPass_Form_Select extends OurPass_Form_Field {
 		<select
 			class="<?php echo \esc_attr( $this->args['class'] ); ?>"
 			name="<?php echo \esc_attr( $this->args['name'] ); ?>"
-			id="<?php echo \esc_attr( $this->rgs['id'] ); ?>"
+			id="<?php echo \esc_attr( $this->args['id'] ); ?>"
 		>
 		<?php
 		foreach ( $this->args['options'] as $value => $label ) :

@@ -353,27 +353,16 @@ function ourpasswc_pdp_button_hook()
 {
     $ourpasswc_setting_pdp_button_hook = ourpasswc_get_option_or_set_default(OURPASSWC_SETTING_PDP_BUTTON_HOOK, OURPASSWC_DEFAULT_PDP_BUTTON_HOOK);
 
-    $options = array(
-        'woocommerce_before_add_to_cart_quantity' => array(
-            'label' => __('Before Quantity Selection'),
-            'image' => OURPASSWC_URL . 'assets/images/before-quantity-selection.png',
-        ),
-        'woocommerce_after_add_to_cart_quantity'  => array(
-            'label' => __('After Quantity Selection'),
-            'image' => OURPASSWC_URL . 'assets/images/after-quantity-selection.png',
-        ),
-        'woocommerce_after_add_to_cart_button'    => array(
-            'label' => __('After Add to Cart Button'),
-            'image' => OURPASSWC_URL . 'assets/images/after-atc-button.png',
-        ),
-    );
-
-    ourpasswc_settings_field_image_select(
+    ourpasswc_settings_field_select(
         array(
             'name'        => OURPASSWC_SETTING_PDP_BUTTON_HOOK,
             'description' => __('Select a location within the Add to Cart form to display the OurPass Product Checkout button.'),
             'value'       => $ourpasswc_setting_pdp_button_hook,
-            'options'     => $options,
+            'options'     => array(
+                'woocommerce_before_add_to_cart_quantity' => __('Before Quantity Selection'),
+                'woocommerce_after_add_to_cart_quantity'  => __('After Quantity Selection'),
+                'woocommerce_after_add_to_cart_button'    => __('After Add to Cart Button'),
+            ),
         )
     );
 }
