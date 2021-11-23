@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Loads ourpass-woocommerce.js in footer.
+ * Loads scripts.
  *
  * @package OurPass
  */
@@ -12,17 +12,25 @@
 function ourpasswc_enqueue_script()
 {
 	wp_enqueue_script(
-		'ourpass-cdn',
-		OURPASSWC_URL . 'assets/dist/cdn.js',
-		array('jquery'),
+		'ourpasswc-native-shim',
+		OURPASSWC_URL . 'assets/dist/native-shim.js',
+		array(),
 		OURPASSWC_VERSION,
 		true
 	);
 
 	wp_enqueue_script(
-		'ourpass-woocommerce',
+		'ourpasswc-cdn',
+		OURPASSWC_URL . 'assets/dist/cdn.js',
+		array(),
+		OURPASSWC_VERSION,
+		true
+	);
+	
+	wp_enqueue_script(
+		'ourpasswc-js',
 		OURPASSWC_URL . 'assets/dist/scripts-wp.js',
-		array('jquery', 'ourpass-cdn'),
+		array('jquery', 'ourpasswc-cdn', 'ourpasswc-native-shim'),
 		OURPASSWC_VERSION,
 		true
 	);
@@ -71,7 +79,7 @@ function ourpasswc_admin_enqueue_scripts()
 		return;
 	}
 	wp_enqueue_style(
-		'ourpass-admin-css',
+		'ourpasswc-admin-css',
 		OURPASSWC_URL . 'assets/dist/styles.css',
 		array(),
 		OURPASSWC_VERSION

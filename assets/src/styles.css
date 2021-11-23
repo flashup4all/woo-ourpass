@@ -6,7 +6,7 @@
 	font-size: 12px;
 }
 @media screen and (min-width: 783px) {
-	.ourpass-settings .input-field .ourpass-select{
+	.ourpass-settings .input-field, .ourpass-settings .ourpass-select{
 		min-height: 40px;
 		width: 400px;
 	}

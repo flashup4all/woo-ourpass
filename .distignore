@@ -6,6 +6,7 @@
 /samples
 package-lock.json
 package.json
+gulpfile.js
 .distignore
 .gitignore
 .babelrc
