@@ -179,9 +179,12 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
         foreach($items as $item)
         {
             $args = array();
-
             // get the product id and define the $product variable
             $product = wc_get_product($item['product_id']);
+
+            if(! $product) {
+                continue;
+            }
 
             // Check if product is variable
             if ($product->is_type('variable') && !empty($item['variation_id'])) {
@@ -214,11 +217,6 @@ class OurPass_Routes_OurPass_Response_Create_Order extends OurPass_Routes_Route 
 
     protected function getOurPassReferenceData($reference)
     {
-        //SAMPLE
-        $string = file_get_contents(OURPASSWC_PATH. "samples/sample-verification.json");
-        return json_decode($string, true);
-
-        //REAL
         $baseUrl = OURPASSWC_ENVIRONMENT === 'production' ? OURPASSWC_PRODUCTION_BASE_URL : OURPASSWC_SANDBOX_BASE_URL;
 
         $ourpass_url = $baseUrl . '/business/seller-user-check';

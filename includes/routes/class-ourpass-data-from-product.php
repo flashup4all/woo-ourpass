@@ -66,10 +66,8 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
             $productData['url'] = preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id)));
             //METADATA
             $productData['metadata']['product_id'] = $product->get_id();
-            $productData['metadata']['qty'] = intval($quantity);
             $productData['metadata']['amount'] = floatval($product->get_price());
-            $productData['metadata']['variation_id'] = null;
-            $productData['metadata']['variation'] = null;
+            $productData['metadata']['qty'] = intval($quantity);
 
             if($product->is_type( 'variable' ) && !empty( $variant_id )) {
 
@@ -110,7 +108,9 @@ class OurPass_Routes_OurPass_Data_From_Product extends OurPass_Routes_Route {
             ];
             $ourpass_data['metadata'] = [
                 'line_items_total' => $productData['amount'] * $productData['qty'],
-                'items' => $productData['metadata'],
+                'items' => array(
+                    $productData['metadata']
+                ),
             ];
 
             return new \WP_REST_Response([

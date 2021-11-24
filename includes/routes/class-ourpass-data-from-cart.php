@@ -56,7 +56,7 @@ class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
                 $product_id = strval($cart_item['product_id']);
                 $product = wc_get_product($product_id);
 
-                $items[] = [
+                $item_data = array(
                     'name' =>  $product->get_name(),
                     'description' => $product->get_name(),
                     'amount' => $cart_item['line_total'] / intval($cart_item['quantity']),
@@ -64,15 +64,21 @@ class OurPass_Routes_OurPass_Data_From_Cart extends OurPass_Routes_Route
                     'src' => wp_get_attachment_image_url($product->get_image_id(), 'full'),
                     'url' => preg_replace("#^[^:/.]*[:/]+#i", "", urldecode(get_permalink($product_id))),
                     'email' => ''
-                ];
+                );
 
-                $itemsMetaData[] = [
+                $metadata = array(
+                    'product_id' => $product->get_id(),
                     'amount' => $cart_item['line_total'] / intval($cart_item['quantity']),
                     'qty' => intval($cart_item['quantity']),
-                    'product_id' => $product->get_id(),
-                    'variation_id' => ($cart_item['variation_id']) ? intval($cart_item['variation_id']) : null,
-                    'variation' => ($cart_item['variation']) ? $cart_item['variation'] : null
-                ];
+                );
+
+                if($cart_item['variation_id']) {
+                    $metadata['variation_id'] = intval($cart_item['variation_id']);
+                    $metadata['variation'] = $cart_item['variation'];
+                }
+
+                $items[] = $item_data;
+                $itemsMetaData[] = $metadata;
             }
 
             if (!isset($items[0]) && empty($items[0])) {
